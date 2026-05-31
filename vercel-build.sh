@@ -1,11 +1,13 @@
 #!/bin/sh
 set -eu
 
+. .venv/bin/activate
+
 cd attack-style
 npm run build-copy
 
 cd ..
-python3 update-attack.py \
+python update-attack.py \
   --modules \
     clean \
     datasources \
