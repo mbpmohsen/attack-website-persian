@@ -6,7 +6,7 @@
         <!-- text input for searching -->
         <div class="search-header">
             <div class="search-input">
-                <input type="text" id="search-input" placeholder="search">
+                <input type="text" id="search-input" placeholder="search" data-i18n-attr="placeholder:search.placeholder">
             </div>
             <div class="search-icons">
                 <div class="search-parsing-icon spinner-border" style="display: none" id="search-parsing-icon"></div>
@@ -19,17 +19,17 @@
                     <button type="button" class="search-filter-summary-chip"
                         data-search-filter-dropdown-toggle="core" aria-controls="search-filter-dropdown-core"
                         aria-expanded="false">
-                        Core Objects: <span data-search-filter-summary="group-core">All</span>
+                        <span data-i18n="search.core_objects">Core Objects</span>: <span data-search-filter-summary="group-core" data-i18n="common.all">All</span>
                     </button>
                     <div class="search-filter-dropdown-menu" id="search-filter-dropdown-core"
                         data-search-filter-dropdown="core" aria-hidden="true" style="display: none;">
                         <div class="search-filter-group-heading">
-                            <span>Core ATT&CK Objects</span>
+                            <span data-i18n="search.core_attack_objects">Core ATT&CK Objects</span>
                             <span class="search-filter-actions">
                                 <button type="button" data-search-filter-group="core"
-                                    data-search-filter-group-action="all">All</button>
+                                    data-search-filter-group-action="all" data-i18n="common.all">All</button>
                                 <button type="button" data-search-filter-group="core"
-                                    data-search-filter-group-action="none">None</button>
+                                    data-search-filter-group-action="none" data-i18n="common.none">None</button>
                             </span>
                         </div>
                         <div class="search-filter-chips">
@@ -52,17 +52,17 @@
                     <button type="button" class="search-filter-summary-chip"
                         data-search-filter-dropdown-toggle="defenses" aria-controls="search-filter-dropdown-defenses"
                         aria-expanded="false">
-                        Defenses: <span data-search-filter-summary="group-defenses">All</span>
+                        <span data-i18n="search.defenses">Defenses</span>: <span data-search-filter-summary="group-defenses" data-i18n="common.all">All</span>
                     </button>
                     <div class="search-filter-dropdown-menu" id="search-filter-dropdown-defenses"
                         data-search-filter-dropdown="defenses" aria-hidden="true" style="display: none;">
                         <div class="search-filter-group-heading">
-                            <span>Defenses</span>
+                            <span data-i18n="search.defenses">Defenses</span>
                             <span class="search-filter-actions">
                                 <button type="button" data-search-filter-group="defenses"
-                                    data-search-filter-group-action="all">All</button>
+                                    data-search-filter-group-action="all" data-i18n="common.all">All</button>
                                 <button type="button" data-search-filter-group="defenses"
-                                    data-search-filter-group-action="none">None</button>
+                                    data-search-filter-group-action="none" data-i18n="common.none">None</button>
                             </span>
                         </div>
                         <div class="search-filter-chips">
@@ -88,17 +88,17 @@
                     <button type="button" class="search-filter-summary-chip"
                         data-search-filter-dropdown-toggle="cti" aria-controls="search-filter-dropdown-cti"
                         aria-expanded="false">
-                        CTI: <span data-search-filter-summary="group-cti">All</span>
+                        <span data-i18n="search.cti">CTI</span>: <span data-search-filter-summary="group-cti" data-i18n="common.all">All</span>
                     </button>
                     <div class="search-filter-dropdown-menu" id="search-filter-dropdown-cti"
                         data-search-filter-dropdown="cti" aria-hidden="true" style="display: none;">
                         <div class="search-filter-group-heading">
-                            <span>CTI</span>
+                            <span data-i18n="search.cti">CTI</span>
                             <span class="search-filter-actions">
                                 <button type="button" data-search-filter-group="cti"
-                                    data-search-filter-group-action="all">All</button>
+                                    data-search-filter-group-action="all" data-i18n="common.all">All</button>
                                 <button type="button" data-search-filter-group="cti"
-                                    data-search-filter-group-action="none">None</button>
+                                    data-search-filter-group-action="none" data-i18n="common.none">None</button>
                             </span>
                         </div>
                         <div class="search-filter-chips">
@@ -118,17 +118,17 @@
                     <button type="button" class="search-filter-summary-chip"
                         data-search-filter-dropdown-toggle="reference" aria-controls="search-filter-dropdown-reference"
                         aria-expanded="false">
-                        Reference: <span data-search-filter-summary="group-reference">All</span>
+                        <span data-i18n="search.reference">Reference</span>: <span data-search-filter-summary="group-reference" data-i18n="common.all">All</span>
                     </button>
                     <div class="search-filter-dropdown-menu" id="search-filter-dropdown-reference"
                         data-search-filter-dropdown="reference" aria-hidden="true" style="display: none;">
                         <div class="search-filter-group-heading">
-                            <span>Reference</span>
+                            <span data-i18n="search.reference">Reference</span>
                             <span class="search-filter-actions">
                                 <button type="button" data-search-filter-group="reference"
-                                    data-search-filter-group-action="all">All</button>
+                                    data-search-filter-group-action="all" data-i18n="common.all">All</button>
                                 <button type="button" data-search-filter-group="reference"
-                                    data-search-filter-group-action="none">None</button>
+                                    data-search-filter-group-action="none" data-i18n="common.none">None</button>
                             </span>
                         </div>
                         <div class="search-filter-chips">
@@ -142,15 +142,15 @@
                     <button type="button" class="search-filter-summary-chip"
                         data-search-filter-dropdown-toggle="domains" aria-controls="search-filter-dropdown-domains"
                         aria-expanded="false">
-                        Domains: <span data-search-filter-summary="domains">All</span>
+                        <span data-i18n="search.domains">Domains</span>: <span data-search-filter-summary="domains" data-i18n="common.all">All</span>
                     </button>
                     <div class="search-filter-dropdown-menu" id="search-filter-dropdown-domains"
                         data-search-filter-dropdown="domains" aria-hidden="true" style="display: none;">
                         <div class="search-filter-group-heading">
-                            <span>Domains</span>
+                            <span data-i18n="search.domains">Domains</span>
                             <span class="search-filter-actions">
-                                <button type="button" data-search-filter-domain-action="all">All</button>
-                                <button type="button" data-search-filter-domain-action="none">None</button>
+                                <button type="button" data-search-filter-domain-action="all" data-i18n="common.all">All</button>
+                                <button type="button" data-search-filter-domain-action="none" data-i18n="common.none">None</button>
                             </span>
                         </div>
                         <div class="search-filter-chips">
@@ -167,7 +167,7 @@
                     </div>
                 </div>
                 <button type="button" class="search-filter-summary-chip search-filter-reset"
-                    data-search-filter-reset style="display: none;">Reset filters</button>
+                    data-search-filter-reset style="display: none;" data-i18n="search.reset_filters">Reset filters</button>
             </div>
         </div>
         <!-- results and pagination controls -->

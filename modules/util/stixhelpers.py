@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import shutil
 from pathlib import Path
 
@@ -481,6 +482,7 @@ def get_stix_memory_stores():
     """Read the json files for each domain and create a dict that contains the memory stores for each domain."""
     ms = {}
     srcs = []
+    stix_filenames = []
 
     stix_output_dir = Path(f"{site_config.web_directory}/stix")
     stix_output_dir.mkdir(parents=True, exist_ok=True)
@@ -497,6 +499,7 @@ def get_stix_memory_stores():
             shutil.copy(domain["location"], str(stix_filename))
 
         if os.path.exists(stix_filename):
+            stix_filenames.append(stix_filename)
             ms[domain["name"]] = stix2.MemoryStore()
             ms[domain["name"]].load_from_file(stix_filename)
         else:
@@ -506,7 +509,50 @@ def get_stix_memory_stores():
         if not domain["deprecated"]:
             srcs.append(ms[domain["name"]])
 
+    generate_stix_translation_javascript(stix_filenames)
+
     return ms, srcs
+
+
+def generate_stix_translation_javascript(stix_filenames):
+    """Generate IE8-compatible JavaScript translations from STIX name_fa and description_fa fields."""
+    translations = {"fa": {}}
+    description_translations = {"fa": {}}
+
+    for stix_filename in stix_filenames:
+        with open(stix_filename, "r", encoding="utf8") as stix_file:
+            stix_bundle = json.load(stix_file)
+
+        for stix_object in stix_bundle.get("objects", []):
+            name = stix_object.get("name")
+            name_fa = stix_object.get("name_fa")
+            if name and name_fa:
+                translations["fa"][name] = name_fa
+
+            description = stix_object.get("description")
+            description_fa = stix_object.get("description_fa")
+            if description and description_fa:
+                translations["fa"][description] = description_fa
+                description_translations["fa"][normalize_translation_key(description)] = description_fa
+
+    translations_path = os.path.join(site_config.javascript_path, "stix-translations.js")
+    with open(translations_path, "w", encoding="utf8") as translations_file:
+        translations_file.write(
+            "/* Generated from STIX name_fa and description_fa fields. Keep ES3-compatible for IE8. */\n"
+        )
+        translations_file.write("window.attackStixTextTranslations = ")
+        translations_file.write(json.dumps(translations, ensure_ascii=False, separators=(",", ":")))
+        translations_file.write(";\n")
+        translations_file.write("window.attackStixDescriptionTranslations = ")
+        translations_file.write(json.dumps(description_translations, ensure_ascii=False, separators=(",", ":")))
+        translations_file.write(";\n")
+
+
+def normalize_translation_key(value):
+    """Return a stable text key for matching rendered STIX descriptions."""
+    without_citations = re.sub(r"\(Citation: .*?\)", "", value)
+    without_reference_numbers = re.sub(r"\[\d+\]", "", without_citations)
+    return " ".join(without_reference_numbers.split())
 
 
 def get_contributors(ms):

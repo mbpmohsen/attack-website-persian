@@ -19,7 +19,7 @@
 {% set RESOURCE_NAV = ${RESOURCE_NAV} -%}
 
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' dir='ltr'>
 
 <head>
     {% block head %}
@@ -97,26 +97,26 @@
                         <div class="footer-link-group">
                             <div class="row row-footer">
                                 <div class="px-3 col-footer">
-                                    <u class="footer-link"><a href="/resources/engage-with-attack/contact" class="footer-link">Contact Us</a></u>
+                                    <u class="footer-link"><a href="/resources/engage-with-attack/contact" class="footer-link" data-i18n="footer.contact">Contact Us</a></u>
                                 </div>
                                 <div class="px-3 col-footer">
-                                    <u class="footer-link"><a href="/resources/legal-and-branding/terms-of-use" class="footer-link">Terms of Use</a></u>
+                                    <u class="footer-link"><a href="/resources/legal-and-branding/terms-of-use" class="footer-link" data-i18n="footer.terms">Terms of Use</a></u>
                                 </div>
                                 {% if RESOURCES %}
                                     <div class="px-3 col-footer">
-                                        <u class="footer-link"><a href="/resources/legal-and-branding/privacy" class="footer-link">Privacy Policy</a></u>
+                                        <u class="footer-link"><a href="/resources/legal-and-branding/privacy" class="footer-link" data-i18n="footer.privacy">Privacy Policy</a></u>
                                     </div>
                                 {% endif %}
                                 <div class="px-3 col-footer">
-                                    <u class="footer-link"><a href="{{CHANGELOG_LOCATION}}" class="footer-link" data-toggle="tooltip" data-placement="top" data-html="true" title="ATT&amp;CK content v{{CONTENT_VERSION}}&#013;Website  v{{WEBSITE_VERSION}}">Website Changelog</a></u>
+                                    <u class="footer-link"><a href="{{CHANGELOG_LOCATION}}" class="footer-link" data-i18n="footer.changelog" data-toggle="tooltip" data-placement="top" data-html="true" title="ATT&amp;CK content v{{CONTENT_VERSION}}&#013;Website  v{{WEBSITE_VERSION}}">Website Changelog</a></u>
                                 </div>
                                 <div class="px-3">
-                                    <u class="footer-link"><a href="/resources/legal-and-branding/privacy/#" class="footer-link" onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')">Cookie Preferences</a></u>
+                                    <u class="footer-link"><a href="/resources/legal-and-branding/privacy/#" class="footer-link" data-i18n="footer.cookie_preferences" onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')">Cookie Preferences</a></u>
                                 </div>
                             </div>
                             <div class="row">
                                 <small class="px-3">
-                                    &copy;&nbsp;2015&nbsp;-&nbsp;2026, The MITRE Corporation. MITRE ATT&CK and ATT&CK are registered trademarks of The MITRE Corporation.
+                                    <span data-i18n="footer.copyright">&copy;&nbsp;2015&nbsp;-&nbsp;2026, The MITRE Corporation. MITRE ATT&CK and ATT&CK are registered trademarks of The MITRE Corporation.</span>
                                 </small>
                             </div>
                         </div>
@@ -166,6 +166,8 @@
     <script src="/theme/scripts/bootstrap.bundle.min.js"></script>
     <script src="/theme/scripts/site.js"></script>
     <script src="/theme/scripts/settings.js"></script>
+    <script src="/theme/scripts/stix-translations.js"></script>
+    <script src="/theme/scripts/language.js"></script>
     <script src="/theme/scripts/search_bundle.js"></script>
 {% endblock %}
 </body>

@@ -21,18 +21,19 @@ if attack_version.startswith("v"):
     attack_version = attack_version[1:]
 
 # Domains for stix objects
+CTI_RAW_BASE_URL = os.getenv("CTI_RAW_BASE_URL", "https://raw.githubusercontent.com/mbpmohsen/cti-persian/master")
 STIX_LOCATION_ENTERPRISE = os.getenv(
     "STIX_LOCATION_ENTERPRISE",
-    "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json",
+    f"{CTI_RAW_BASE_URL}/enterprise-attack/enterprise-attack.json",
 )
 STIX_LOCATION_MOBILE = os.getenv(
-    "STIX_LOCATION_MOBILE", "https://raw.githubusercontent.com/mitre/cti/master/mobile-attack/mobile-attack.json"
+    "STIX_LOCATION_MOBILE", f"{CTI_RAW_BASE_URL}/mobile-attack/mobile-attack.json"
 )
 STIX_LOCATION_ICS = os.getenv(
-    "STIX_LOCATION_ICS", "https://raw.githubusercontent.com/mitre/cti/master/ics-attack/ics-attack.json"
+    "STIX_LOCATION_ICS", f"{CTI_RAW_BASE_URL}/ics-attack/ics-attack.json"
 )
 STIX_LOCATION_PRE = os.getenv(
-    "STIX_LOCATION_PRE", "https://raw.githubusercontent.com/mitre/cti/master/pre-attack/pre-attack.json"
+    "STIX_LOCATION_PRE", f"{CTI_RAW_BASE_URL}/pre-attack/pre-attack.json"
 )
 domains = [
     {"name": "enterprise-attack", "location": STIX_LOCATION_ENTERPRISE, "alias": "Enterprise", "deprecated": False},
