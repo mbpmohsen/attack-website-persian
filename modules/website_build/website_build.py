@@ -243,10 +243,10 @@ def pelican_content():
     """Build the generated markdown content with Pelican."""
     logger.info("Building website with Pelican")
     normalize_generated_page_urls()
-    pelican_cmd = "pelican content"
+    pelican_cmd = ["pelican", "content"]
 
     if site_config.subdirectory:
-        pelican_cmd = f"{pelican_cmd} -o {site_config.web_directory}"
+        pelican_cmd.extend(["-o", site_config.web_directory])
 
     google_analytics = site_config.GOOGLE_ANALYTICS
     google_site_verification = site_config.GOOGLE_SITE_VERIFICATION
@@ -259,21 +259,26 @@ def pelican_content():
     if site_config.args.include_osano:
         include_osano = site_config.args.include_osano
 
-    extra_settings = ""
-    if google_analytics:
-        extra_settings = f"{extra_settings} GOOGLE_ANALYTICS='\"{google_analytics}\"'"
-    if google_site_verification:
-        extra_settings = f"{extra_settings} GOOGLE_SITE_VERIFICATION='\"{google_site_verification}\"'"
-    if include_osano:
-        extra_settings = f"{extra_settings} INCLUDE_OSANO='\"{include_osano}\"'"
+    extra_settings = []
+    google_analytics = clean_pelican_extra_setting(google_analytics)
+    google_site_verification = clean_pelican_extra_setting(google_site_verification)
+    include_osano = clean_pelican_extra_setting(include_osano)
+
+    if google_analytics is not None:
+        extra_settings.append(f"GOOGLE_ANALYTICS={json.dumps(google_analytics)}")
+    if google_site_verification is not None:
+        extra_settings.append(f"GOOGLE_SITE_VERIFICATION={json.dumps(google_site_verification)}")
+    if include_osano is not None:
+        extra_settings.append(f"INCLUDE_OSANO={json.dumps(include_osano)}")
 
     if extra_settings:
-        pelican_cmd = f"{pelican_cmd} -e {extra_settings}"
+        pelican_cmd.append("-e")
+        pelican_cmd.extend(extra_settings)
 
     logger.debug(f"{pelican_cmd=}")
 
     try:
-        subprocess.run(pelican_cmd, shell=True, check=True, capture_output=True, text=True)
+        subprocess.run(pelican_cmd, check=True, capture_output=True, text=True)
     except subprocess.CalledProcessError as err:
         stdout = err.stdout if err.stdout is not None else err.output
         if stdout:
@@ -281,6 +286,19 @@ def pelican_content():
         if err.stderr:
             logger.error("Pelican stderr:\n{}", err.stderr.rstrip())
         raise
+
+
+def clean_pelican_extra_setting(value):
+    """Normalize optional Pelican extra settings before JSON serialization."""
+    if value is None:
+        return None
+
+    # Vercel environment variables are sometimes entered as "" instead of being left blank.
+    # Pelican 4.12 rejects those after the old shell quoting turned them into invalid JSON.
+    if isinstance(value, str) and value.strip() in ("", '""', "''"):
+        return None
+
+    return value
 
 
 def normalize_generated_page_urls():
