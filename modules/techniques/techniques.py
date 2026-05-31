@@ -111,6 +111,7 @@ def generate_technique_md(technique, domain, side_nav_data, tactic_list, notes, 
         technique_dict["domain"] = domain.split("-")[0]
         technique_dict["menu"] = side_nav_data
         technique_dict["name"] = technique.get("name")
+        technique_dict["name_fa"] = technique.get("name_fa")
         technique_dict["notes"] = notes.get(technique["id"])
 
         # Get subtechniques (not deprecated/revoked)
@@ -143,6 +144,7 @@ def generate_technique_md(technique, domain, side_nav_data, tactic_list, notes, 
                 sub_tech_dict["menu"] = side_nav_data
                 sub_tech_dict["parent_id"] = technique_dict["attack_id"]
                 sub_tech_dict["parent_name"] = technique.get("name")
+                sub_tech_dict["parent_name_fa"] = technique.get("name_fa")
                 sub_tech_dict["subtechniques"] = technique_dict["subtechniques"]
 
                 sub_tech_dict = generate_data_for_md(
@@ -169,6 +171,7 @@ def generate_technique_md(technique, domain, side_nav_data, tactic_list, notes, 
 def generate_data_for_md(technique_dict, technique, tactic_list, is_sub_technique=False, datasource_of=None):
     """Given a technique or subtechnique, fill technique dictionary to create markdown file."""
     technique_dict["name"] = technique.get("name")
+    technique_dict["name_fa"] = technique.get("name_fa")
 
     if is_sub_technique:
         technique_dict["attack_id"] = util.buildhelpers.get_attack_id(technique)
@@ -215,6 +218,8 @@ def generate_data_for_md(technique_dict, technique, tactic_list, is_sub_techniqu
         # Get technique description with citations
         if technique.get("description") and not technique_dict["deprecated"]:
             technique_dict["descr"] = technique["description"]
+            if technique.get("description_fa"):
+                technique_dict["descr_fa"] = technique["description_fa"]
 
             # Get mitigation table
             technique_dict["mitigation_table"] = get_mitigations_table_data(technique, reference_list)
@@ -254,7 +259,11 @@ def generate_data_for_md(technique_dict, technique, tactic_list, is_sub_techniqu
                         continue
                     tactic = tmp_tactic_list[0]
 
-                    tactic_info = {"name": tactic["name"], "id": util.buildhelpers.get_attack_id(tactic)}
+                    tactic_info = {
+                        "name": tactic["name"],
+                        "name_fa": tactic.get("name_fa"),
+                        "id": util.buildhelpers.get_attack_id(tactic),
+                    }
                     technique_dict["tactics"].append(tactic_info)
 
             # Get platforms that technique uses
@@ -496,11 +505,14 @@ def get_examples_table_data(technique, reference_list):
                 row["path"] = get_path_from_type(example["object"])
 
                 row["name"] = example["object"]["name"]
+                row["name_fa"] = example["object"].get("name_fa")
 
                 if example["relationship"].get("description"):
                     # Get filtered description
                     reference_list = util.buildhelpers.update_reference_list(reference_list, example["relationship"])
                     row["descr"] = example["relationship"]["description"]
+                    if example["relationship"].get("description_fa"):
+                        row["descr_fa"] = example["relationship"]["description_fa"]
 
                 example_data.append(row)
 
@@ -538,6 +550,7 @@ def get_technique_side_nav_data(techniques, tactics):
             tactic_row = {}
 
             tactic_row["name"] = tactic["name"]
+            tactic_row["name_fa"] = tactic.get("name_fa")
             tactic_row["id"] = util.buildhelpers.get_attack_id(tactic)
             tactic_row["path"] = "/tactics/{}".format(util.buildhelpers.get_attack_id(tactic))
 
@@ -550,6 +563,7 @@ def get_technique_side_nav_data(techniques, tactics):
                 technique_row = {}
                 # Get technique id and name for each technique
                 technique_row["name"] = technique["name"]
+                technique_row["name_fa"] = technique.get("name_fa")
                 technique_row["id"] = technique["id"]
                 technique_row["path"] = "/techniques/{}/".format(technique["id"])
                 technique_row["children"] = []
@@ -562,6 +576,7 @@ def get_technique_side_nav_data(techniques, tactics):
                         child["id"] = util.buildhelpers.get_attack_id(subtechnique["object"])
                         if child["id"]:
                             child["name"] = subtechnique["object"]["name"]
+                            child["name_fa"] = subtechnique["object"].get("name_fa")
                             sub_number = child["id"].split(".")[1]
                             child["path"] = "/techniques/{}/{}/".format(technique["id"], sub_number)
                             child["children"] = []
@@ -601,7 +616,9 @@ def get_techniques_list(techniques):
             technique_dict["id"] = attack_id
             technique_dict["stix_id"] = technique["id"]
             technique_dict["name"] = technique["name"]
+            technique_dict["name_fa"] = technique.get("name_fa")
             technique_dict["description"] = technique["description"]
+            technique_dict["description_fa"] = technique.get("description_fa")
 
             if technique.get("kill_chain_phases"):
                 for elem in technique["kill_chain_phases"]:
@@ -635,6 +652,7 @@ def get_subtechniques(technique):
             if sub_data["id"]:
                 sub_data["stix_id"] = technique["id"]
                 sub_data["name"] = subtechnique["object"]["name"]
+                sub_data["name_fa"] = subtechnique["object"].get("name_fa")
                 sub_number = sub_data["id"].split(".")[1]
                 attack_id = util.buildhelpers.get_attack_id(technique)
                 sub_data["path"] = f"/techniques/{attack_id}/{sub_number}/"

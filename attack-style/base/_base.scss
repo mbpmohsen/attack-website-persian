@@ -22,3 +22,46 @@
 .bg-alternate {
   @extend %bg-alternate;
 }
+
+.language-content-fa {
+  display: none;
+}
+
+html[lang="fa"],
+html[lang="fa"] body {
+  direction: rtl;
+  font-family: Vazir, Tahoma, Arial, sans-serif;
+}
+
+html[lang="fa"] body,
+html[lang="fa"] .description-body,
+html[lang="fa"] .card,
+html[lang="fa"] .table th,
+html[lang="fa"] .table td,
+html[lang="fa"] .breadcrumb,
+html[lang="fa"] .dropdown-menu {
+  text-align: right;
+}
+
+html[lang="fa"] .language-content-en.has-language-alternative {
+  display: none;
+}
+
+html[lang="fa"] .language-content-fa {
+  display: block;
+}
+
+html[lang="fa"] span.language-content-fa {
+  display: inline;
+}
+
+html[lang="fa"] .breadcrumb-item + .breadcrumb-item {
+  padding-right: 0.5rem;
+  padding-left: 0;
+}
+
+html[lang="fa"] .breadcrumb-item + .breadcrumb-item:before {
+  float: right;
+  padding-right: 0;
+  padding-left: 0.5rem;
+}

@@ -15,6 +15,13 @@
 {% set title_prefix = parsed.parent_name + ": " if parsed.is_subtechnique else "" %}
 {% set title_type = "Sub-technique" if parsed.is_subtechnique else "Technique" %}
 {% import 'macros/versioning.html' as versioning %}
+{% macro localized_text(en_text, fa_text) -%}
+{% if fa_text %}
+<span class="language-content-en has-language-alternative">{{ en_text }}</span><span class="language-content-fa">{{ fa_text }}</span>
+{% else %}
+{{ en_text }}
+{% endif %}
+{%- endmacro %}
 
 {% if parsed.domain == "mobile" %}
 {% set title = title_prefix + parsed.name + ", " + title_type + " " + parsed.attack_id + " - Mobile | MITRE ATT&CK&reg;" -%}
@@ -62,9 +69,9 @@
   <li class="breadcrumb-item"><a href="/techniques/mobile">Mobile</a></li>
   {% endif %}
   {% if parsed.is_subtechnique %}
-  <li class="breadcrumb-item"><a href="/techniques/{{parsed.parent_id}}">{{parsed.parent_name}}</a></li>
+  <li class="breadcrumb-item"><a href="/techniques/{{parsed.parent_id}}">{{ localized_text(parsed.parent_name, parsed.parent_name_fa) }}</a></li>
   {% endif %}
-  <li class="breadcrumb-item">{{parsed.name}}</li>
+  <li class="breadcrumb-item">{{ localized_text(parsed.name, parsed.name_fa) }}</li>
 </ol>
 <div class="tab-pane fade show active" id="v-{{pages.title}}" role="tabpanel" aria-labelledby="v-{{pages.title}}-tab">
 </div>
@@ -74,9 +81,9 @@
       <div class="container-fluid">
         <h1 id="">
           {% if parsed.is_subtechnique %}
-          <span id="subtechnique-parent-name">{{parsed.parent_name}}:</span>
+          <span id="subtechnique-parent-name">{{ localized_text(parsed.parent_name + ":", (parsed.parent_name_fa + ":") if parsed.parent_name_fa else None) }}</span>
           {% endif %}
-          {{parsed.name}}
+          {{ localized_text(parsed.name, parsed.name_fa) }}
         </h1>
 
         {% if parsed.deprecated %}
@@ -120,14 +127,14 @@
                         </td>
                         <td>
                           <a href="{{subtechnique.path}}" class="subtechnique-table-item"
-                            data-subtechnique_id="{{subtechnique.id}}"> {{subtechnique.name}} </a>
+                            data-subtechnique_id="{{subtechnique.id}}"> {{ localized_text(subtechnique.name, subtechnique.name_fa) }} </a>
                         </td>
                         {% else %}
                         <td class="active">
                           {{subtechnique.id}}
                         </td>
                         <td class="active">
-                          {{subtechnique.name}}
+                          {{ localized_text(subtechnique.name, subtechnique.name_fa) }}
                         </td>
                         {% endif %}
                       </tr>
@@ -141,9 +148,14 @@
             {% endif %}
 
             {% if parsed.descr %}
-            <div class="description-body">
+            <div class="description-body language-content-en{% if parsed.descr_fa %} has-language-alternative{% endif %}">
               {{clean_output.stixToHTML(parsed.descr, parsed.citations)}}
             </div>
+            {% if parsed.descr_fa %}
+            <div class="description-body language-content-fa" lang="fa" dir="rtl">
+              {{clean_output.stixToHTML(parsed.descr_fa, parsed.citations)}}
+            </div>
+            {% endif %}
             {% endif %}
             {% if parsed.notes %}
             {{ notes.notes_section(parsed.notes) }}
@@ -197,7 +209,7 @@
                   <div class="col-md-11 pl-0">
                     <span class="h5 card-title">{{"Tactic" if parsed.tactics | length < 2 else "Tactics" }}:</span>
                         {% for tactic in parsed.tactics %}
-                        <a href="/tactics/{{tactic.id}}">{{tactic.name}}</a>{% if not loop.last %},{% endif %}
+                        <a href="/tactics/{{tactic.id}}">{{ localized_text(tactic.name, tactic.name_fa) }}</a>{% if not loop.last %},{% endif %}
                         {% endfor %}
                   </div>
                 </div>
@@ -356,7 +368,7 @@
           </div>
         </div>
         {% if parsed.examples_table %}
-        <h2 class="pt-3" id="examples">Procedure Examples</h2>
+        <h2 class="pt-3" id="examples">{{ localized_text("Procedure Examples", "نمونه‌های رویه") }}</h2>
         <div class="tables-mobile">
           <table class="table table-bordered table-alternate mt-2">
             <thead>
@@ -373,11 +385,18 @@
                   <a href="/{{example.path}}/{{example.id}}"> {{example.id}} </a>
                 </td>
                 <td>
-                  <a href="/{{example.path}}/{{example.id}}"> {{example.name}} </a>
+                  <a href="/{{example.path}}/{{example.id}}"> {{ localized_text(example.name, example.name_fa) }} </a>
                 </td>
                 <td>
                   {% if example.descr %}
-                  {{clean_output.stixToHTML(example.descr, parsed.citations)}}
+                  <div class="language-content-en{% if example.descr_fa %} has-language-alternative{% endif %}">
+                    {{clean_output.stixToHTML(example.descr, parsed.citations)}}
+                  </div>
+                  {% if example.descr_fa %}
+                  <div class="language-content-fa" lang="fa" dir="rtl">
+                    {{clean_output.stixToHTML(example.descr_fa, parsed.citations)}}
+                  </div>
+                  {% endif %}
                   {% endif %}
                 </td>
               </tr>

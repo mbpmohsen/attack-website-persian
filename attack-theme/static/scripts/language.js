@@ -9,75 +9,127 @@
  */
 (function () {
     var cookieName = "attack_language";
-    var defaultLanguage = "en";
+    var defaultLanguage = "fa";
     var supportedLanguages = { en: true, fa: true };
 
-    /*
-     * Persian strings are intentionally marked TODO-FA where they need review
-     * by a fluent human translator. This satisfies the placeholder requirement
-     * without pretending the generated translations are final.
-     */
+    /* Keep strings simple and static so the language switch remains IE8-compatible. */
     var translations = {
         fa: {
-            "language.label": "زبان [TODO-FA]",
+            "language.label": "زبان",
             "language.english": "English",
-            "language.persian": "فارسی [TODO-FA]",
-            "nav.home_alt": "خانه ATT&CK [TODO-FA]",
-            "search.button": "جستجو [TODO-FA]",
-            "search.placeholder": "جستجو [TODO-FA]",
-            "search.core_objects": "اشیای اصلی [TODO-FA]",
-            "search.core_attack_objects": "اشیای اصلی ATT&CK [TODO-FA]",
-            "search.defenses": "دفاع‌ها [TODO-FA]",
-            "search.cti": "اطلاعات تهدید [TODO-FA]",
-            "search.reference": "مرجع [TODO-FA]",
-            "search.domains": "دامنه‌ها [TODO-FA]",
-            "search.reset_filters": "بازنشانی پالایه‌ها [TODO-FA]",
-            "common.all": "همه [TODO-FA]",
-            "common.none": "هیچ‌کدام [TODO-FA]",
-            "footer.contact": "تماس با ما [TODO-FA]",
-            "footer.terms": "شرایط استفاده [TODO-FA]",
-            "footer.privacy": "حریم خصوصی [TODO-FA]",
-            "footer.changelog": "تغییرات وب‌سایت [TODO-FA]",
-            "footer.cookie_preferences": "تنظیمات کوکی [TODO-FA]",
-            "footer.copyright": "&copy;&nbsp;2015&nbsp;-&nbsp;2026، The MITRE Corporation. MITRE ATT&CK و ATT&CK نشان‌های تجاری ثبت‌شده The MITRE Corporation هستند. [TODO-FA]"
+            "language.persian": "فارسی",
+            "nav.home_alt": "خانه ATT&CK",
+            "search.button": "جستجو",
+            "search.placeholder": "جستجو",
+            "search.core_objects": "اشیای اصلی",
+            "search.core_attack_objects": "اشیای اصلی ATT&CK",
+            "search.defenses": "دفاع‌ها",
+            "search.cti": "اطلاعات تهدید سایبری",
+            "search.reference": "مرجع",
+            "search.domains": "دامنه‌ها",
+            "search.reset_filters": "بازنشانی فیلترها",
+            "common.all": "همه",
+            "common.none": "هیچ‌کدام",
+            "footer.contact": "تماس با ما",
+            "footer.terms": "شرایط استفاده",
+            "footer.privacy": "حریم خصوصی",
+            "footer.changelog": "تغییرات وب‌سایت",
+            "footer.cookie_preferences": "تنظیمات کوکی",
+            "footer.copyright": "&copy;&nbsp;2015&nbsp;-&nbsp;2026، The MITRE Corporation. MITRE ATT&CK و ATT&CK نشان‌های تجاری ثبت‌شده The MITRE Corporation هستند."
         }
     };
 
     var textTranslations = {
         fa: {
-            "Home": "خانه [TODO-FA]",
-            "Search": "جستجو [TODO-FA]",
-            "All": "همه [TODO-FA]",
-            "None": "هیچ‌کدام [TODO-FA]",
-            "ID": "شناسه [TODO-FA]",
-            "ID:": "شناسه: [TODO-FA]",
-            "Name": "نام [TODO-FA]",
-            "Description": "توضیح [TODO-FA]",
-            "Version": "نسخه [TODO-FA]",
-            "Created": "ایجاد شده [TODO-FA]",
-            "Last Modified": "آخرین تغییر [TODO-FA]",
-            "Contributors": "مشارکت‌کنندگان [TODO-FA]",
-            "References": "منابع [TODO-FA]",
-            "Enterprise": "سازمانی [TODO-FA]",
-            "Mobile": "موبایل [TODO-FA]",
-            "ICS": "سامانه‌های کنترل صنعتی [TODO-FA]",
-            "Matrices": "ماتریس‌ها [TODO-FA]",
-            "Tactics": "تاکتیک‌ها [TODO-FA]",
-            "Techniques": "تکنیک‌ها [TODO-FA]",
-            "Sub-Techniques": "زیرتکنیک‌ها [TODO-FA]",
-            "Mitigations": "کاهش‌دهنده‌ها [TODO-FA]",
-            "Assets": "دارایی‌ها [TODO-FA]",
-            "Data Sources": "منابع داده [TODO-FA]",
-            "Data Components": "مولفه‌های داده [TODO-FA]",
-            "Detection Strategies": "راهبردهای تشخیص [TODO-FA]",
-            "Analytics": "تحلیل‌ها [TODO-FA]",
-            "Groups": "گروه‌ها [TODO-FA]",
-            "Software": "نرم‌افزار [TODO-FA]",
-            "Campaigns": "کارزارها [TODO-FA]",
-            "Resources": "منابع [TODO-FA]",
-            "Overview": "نمای کلی [TODO-FA]",
-            "Platform": "سکو [TODO-FA]",
-            "Domains": "دامنه‌ها [TODO-FA]"
+            "Home": "خانه",
+            "Search": "جستجو",
+            "All": "همه",
+            "None": "هیچ‌کدام",
+            "ID": "شناسه",
+            "ID:": "شناسه:",
+            "Identifier": "شناسه",
+            "Name": "نام",
+            "Description": "توضیح",
+            "Version": "نسخه",
+            "Version:": "نسخه:",
+            "Created": "ایجاد شده",
+            "Created:": "ایجاد شده:",
+            "Last Modified": "آخرین تغییر",
+            "Last Modified:": "آخرین تغییر:",
+            "Contributors": "مشارکت‌کنندگان",
+            "Contributors:": "مشارکت‌کنندگان:",
+            "References": "منابع",
+            "Enterprise": "سازمانی",
+            "Mobile": "موبایل",
+            "ICS": "سامانه‌های کنترل صنعتی",
+            "Blog": "وبلاگ",
+            "Contribute": "مشارکت",
+            "Benefactors": "حامیان",
+            "Defenses": "دفاع‌ها",
+            "CTI": "اطلاعات تهدید",
+            "Matrices": "ماتریس‌ها",
+            "MATRICES": "ماتریس‌ها",
+            "Tactics": "تاکتیک‌ها",
+            "TACTICS": "تاکتیک‌ها",
+            "Techniques": "تکنیک‌ها",
+            "TECHNIQUES": "تکنیک‌ها",
+            "Sub-Techniques": "زیرتکنیک‌ها",
+            "Sub-techniques": "زیرتکنیک‌ها",
+            "Sub-techniques:": "زیرتکنیک‌ها:",
+            "Sub-technique of:": "زیرتکنیکِ:",
+            "No sub-techniques": "زیرتکنیکی وجود ندارد",
+            "Mitigations": "راهکارهای کاهش خطر",
+            "MITIGATIONS": "راهکارهای کاهش خطر",
+            "Assets": "دارایی‌ها",
+            "Targeted Assets": "دارایی‌های هدف",
+            "Data Sources": "منابع داده",
+            "Data Components": "مولفه‌های داده",
+            "Detection Strategies": "راهبردهای تشخیص",
+            "Analytics": "تحلیل‌ها",
+            "Groups": "گروه‌ها",
+            "GROUPS": "گروه‌ها",
+            "Software": "نرم‌افزار",
+            "SOFTWARE": "نرم‌افزار",
+            "Campaigns": "کارزارها",
+            "Resources": "منابع",
+            "Overview": "نمای کلی",
+            "Platform": "سکو",
+            "Platform:": "سکو:",
+            "Platforms": "سکوها",
+            "Platforms:": "سکوها:",
+            "Domains": "دامنه‌ها",
+            "Procedure Examples": "نمونه‌های رویه",
+            "Tactic": "تاکتیک",
+            "Tactic:": "تاکتیک:",
+            "Tactics:": "تاکتیک‌ها:",
+            "Tactic Type:": "نوع تاکتیک:",
+            "System Requirements:": "نیازمندی‌های سیستم:",
+            "Permissions Required:": "مجوزهای مورد نیاز:",
+            "Effective Permissions:": "مجوزهای موثر:",
+            "Supports Remote:": "پشتیبانی از اجرای راه دور:",
+            "Requires Network:": "نیازمند شبکه:",
+            "Defense Bypassed:": "دفاع دور زده شده:",
+            "Impact Type:": "نوع اثر:",
+            "CAPEC ID:": "شناسه CAPEC:",
+            "MTC ID:": "شناسه MTC:",
+            "Version Permalink": "پیوند پایدار نسخه"
+        }
+    };
+
+    var monthTranslations = {
+        fa: {
+            "January": "ژانویه",
+            "February": "فوریه",
+            "March": "مارس",
+            "April": "آوریل",
+            "May": "مه",
+            "June": "ژوئن",
+            "July": "ژوئیه",
+            "August": "اوت",
+            "September": "سپتامبر",
+            "October": "اکتبر",
+            "November": "نوامبر",
+            "December": "دسامبر"
         }
     };
 
@@ -195,6 +247,23 @@
         return trim(String(value).replace(/\[\d+\]/g, "").replace(/\s+/g, " "));
     }
 
+    function translateMonthNames(language, value) {
+        var dict = monthTranslations[language];
+        var month;
+
+        if (!dict) {
+            return value;
+        }
+
+        for (month in dict) {
+            if (dict.hasOwnProperty(month)) {
+                value = value.replace(new RegExp("\\b" + month + "\\b", "g"), dict[month]);
+            }
+        }
+
+        return value;
+    }
+
     function hasClassName(element, className) {
         return (" " + element.className + " ").indexOf(" " + className + " ") > -1;
     }
@@ -251,6 +320,8 @@
                 leading = value.match(/^\s*/)[0];
                 trailing = value.match(/\s*$/)[0];
                 node.nodeValue = leading + translation + trailing;
+            } else {
+                node.nodeValue = translateMonthNames(language, value);
             }
             return;
         }

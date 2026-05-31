@@ -121,6 +121,17 @@
   text-align: right;
 }
 
+[dir="rtl"] .navbar .dropdown-menu {
+  left: auto;
+  right: 0;
+  text-align: right;
+}
+
+[dir="rtl"] .navbar .dropdown-menu-right {
+  left: 0;
+  right: auto;
+}
+
 /* **** */
 
 .nav,
@@ -246,6 +257,16 @@
 }
 
 /* **** */
+
+[dir="rtl"] .nav .nav-link.side.active {
+  border-right: 0;
+  border-left: utilities.to-rem(3) solid color-functions.color(primary);
+}
+
+[dir="rtl"] .nav .heading,
+[dir="rtl"] .nav .heading-dropdown {
+  letter-spacing: 0;
+}
 
 .resizer {
   width: 2px;

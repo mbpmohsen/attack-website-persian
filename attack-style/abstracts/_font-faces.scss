@@ -40,3 +40,15 @@ $fonts: (
     src: url(list.nth(map.get($fonts, "srcs"), $i));
   }
 }
+
+/* Persian UI font. EOT is included first so IE8 can load the font. */
+@font-face {
+  font-family: Vazir;
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/Vazir/Vazir-Regular.eot");
+  src: url("fonts/Vazir/Vazir-Regular.eot?#iefix") format("embedded-opentype"),
+    url("fonts/Vazir/Vazir-Regular.woff2") format("woff2"),
+    url("fonts/Vazir/Vazir-Regular.woff") format("woff"),
+    url("fonts/Vazir/Vazir-Regular.ttf") format("truetype");
+}

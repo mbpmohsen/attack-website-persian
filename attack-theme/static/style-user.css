@@ -36,6 +36,14 @@
   font-weight: 900;
   src: url("fonts/Roboto/Roboto-Black.ttf");
 }
+/* Persian UI font. EOT is included first so IE8 can load the font. */
+@font-face {
+  font-family: Vazir;
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/Vazir/Vazir-Regular.eot");
+  src: url("fonts/Vazir/Vazir-Regular.eot?#iefix") format("embedded-opentype"), url("fonts/Vazir/Vazir-Regular.woff2") format("woff2"), url("fonts/Vazir/Vazir-Regular.woff") format("woff"), url("fonts/Vazir/Vazir-Regular.ttf") format("truetype");
+}
 .deemphasis {
   color: rgb(106.5, 114, 120.75);
 }
@@ -49,6 +57,49 @@
 .blog-post table,
 .changelog table, .bg-alternate {
   background-color: rgb(242.25, 242.25, 242.25) !important;
+}
+
+.language-content-fa {
+  display: none;
+}
+
+html[lang=fa],
+html[lang=fa] body {
+  direction: rtl;
+  font-family: Vazir, Tahoma, Arial, sans-serif;
+}
+
+html[lang=fa] body,
+html[lang=fa] .description-body,
+html[lang=fa] .card,
+html[lang=fa] .table th,
+html[lang=fa] .table td,
+html[lang=fa] .breadcrumb,
+html[lang=fa] .dropdown-menu {
+  text-align: right;
+}
+
+html[lang=fa] .language-content-en.has-language-alternative {
+  display: none;
+}
+
+html[lang=fa] .language-content-fa {
+  display: block;
+}
+
+html[lang=fa] span.language-content-fa {
+  display: inline;
+}
+
+html[lang=fa] .breadcrumb-item + .breadcrumb-item {
+  padding-right: 0.5rem;
+  padding-left: 0;
+}
+
+html[lang=fa] .breadcrumb-item + .breadcrumb-item:before {
+  float: right;
+  padding-right: 0;
+  padding-left: 0.5rem;
 }
 
 .text-label {
@@ -1561,6 +1612,40 @@ div#sidebars {
   cursor: default;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg fill='%23FFFFFF' xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 96 960 960' width='24'%3e%3cpath d='M479.982 776q14.018 0 23.518-9.482 9.5-9.483 9.5-23.5 0-14.018-9.482-23.518-9.483-9.5-23.5-9.5-14.018 0-23.518 9.482-9.5 9.483-9.5 23.5 0 14.018 9.482 23.518 9.483 9.5 23.5 9.5ZM453 623h60V370h-60v253Zm27.266 353q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80 658.319 80 575.5q0-82.819 31.5-155.659Q143 347 197.5 293t127.341-85.5Q397.681 176 480.5 176q82.819 0 155.659 31.5Q709 239 763 293t85.5 127Q880 493 880 575.734q0 82.734-31.5 155.5T763 858.316q-54 54.316-127 86Q563 976 480.266 976Zm.234-60Q622 916 721 816.5t99-241Q820 434 721.188 335 622.375 236 480 236q-141 0-240.5 98.812Q140 433.625 140 576q0 141 99.5 240.5t241 99.5Zm-.5-340Z'/%3e%3c/svg%3e");
 }
+.navbar .language-selector-item {
+  padding: 0.2rem 0.75rem;
+  white-space: nowrap;
+}
+.navbar .language-selector-label {
+  color: white;
+  font-size: 0.875rem;
+  margin-right: 0.375rem;
+}
+.navbar .language-selector {
+  font-size: 0.875rem;
+  height: 1.875rem;
+  max-width: 9.375rem;
+}
+
+[dir=rtl] .navbar .language-selector-label {
+  margin-right: 0;
+  margin-left: 0.375rem;
+}
+
+[dir=rtl] .navbar .nav-tabs {
+  text-align: right;
+}
+
+[dir=rtl] .navbar .dropdown-menu {
+  left: auto;
+  right: 0;
+  text-align: right;
+}
+
+[dir=rtl] .navbar .dropdown-menu-right {
+  left: 0;
+  right: auto;
+}
 
 /* **** */
 .nav,
@@ -1686,6 +1771,16 @@ div#sidebars {
 }
 
 /* **** */
+[dir=rtl] .nav .nav-link.side.active {
+  border-right: 0;
+  border-left: 0.1875rem solid #303435;
+}
+
+[dir=rtl] .nav .heading,
+[dir=rtl] .nav .heading-dropdown {
+  letter-spacing: 0;
+}
+
 .resizer {
   width: 2px;
   top: 0;
