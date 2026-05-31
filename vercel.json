@@ -1,4 +1,6 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
   "installCommand": "python3 -m pip install -r requirements.txt && cd attack-style && npm ci && cd ../attack-search && npm ci",
   "buildCommand": "./vercel-build.sh",
   "outputDirectory": "output"
