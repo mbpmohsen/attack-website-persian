@@ -181,7 +181,9 @@ def generate_index_page():
     # get index matrix data
     matrix = website_build_config.index_matrix
     data["matrix_name"] = matrix["name"]
+    data["matrix_name_fa"] = matrix.get("name_fa")
     data["matrix_descr"] = matrix["descr"]
+    data["matrix_descr_fa"] = matrix.get("descr_fa")
     data["matrices"], data["has_subtechniques"], data["tour_technique"] = matrices.matrices.get_sub_matrices(matrix)
     data["logo_landingpage"] = website_build_config.base_page_data["logo_landingpage"]
     data["attack_branding"] = site_config.args.attack_brand

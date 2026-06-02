@@ -3,6 +3,7 @@
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/table_with_subtechniques.html' as technique_table %}
 {% import 'macros/deprecated.html' as deprecated %}
+{% import 'macros/localized.html' as localized %}
 
 {% if parsed.domain == "mobile" %}
 {% set title = "Techniques - Mobile | MITRE ATT&CK&reg;" -%}
@@ -61,16 +62,18 @@
                 {% endif %}
               </h1>
               <p>
-                Techniques represent 'how' an adversary achieves a tactical goal by performing an action. For example,
-                an adversary may dump credentials to achieve credential access.
+                {{ localized.text(
+                  "Techniques represent 'how' an adversary achieves a tactical goal by performing an action. For example, an adversary may dump credentials to achieve credential access.",
+                  "تکنیک‌ها نشان می‌دهند دشمن چگونه با انجام یک اقدام به یک هدف تاکتیکی می‌رسد. برای نمونه، دشمن ممکن است برای دستیابی به دسترسی به اعتبارنامه‌ها، اعتبارنامه‌ها را استخراج کند."
+                ) }}
               </p>
             </div>
             <div class="col-md-2 div-count">
               <div class="row table-object-count pr-3">
-                <h6>Techniques: {{ parsed.technique_list_len }}</h6>
+                <h6>{{ localized.text("Techniques:", "تکنیک‌ها:") }} {{ parsed.technique_list_len }}</h6>
               </div>
               <div class="row table-object-count pr-3">
-                <h6>Sub-techniques: {{ parsed.subtechniques_len }}</h6>
+                <h6>{{ localized.text("Sub-techniques:", "زیرتکنیک‌ها:") }} {{ parsed.subtechniques_len }}</h6>
               </div>
             </div>
           </div>

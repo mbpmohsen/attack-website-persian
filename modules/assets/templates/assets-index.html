@@ -4,6 +4,7 @@
 {% set active_page = "assets" -%}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% block innerleft %}
 <!--stop-indexing-for-search-->
@@ -27,25 +28,10 @@
       <div class="container-fluid">
         <div class="overflow-x-auto">
           <h1>Assets</h1>
-          <p>
-            Assets represent the devices and systems commonly found within Industrial Control System environments. Each
-            asset object includes a mapping of technique relationships that represent the adversary actions that may
-            target the device based on its capability and function.
-          </p>
-          <p>
-            Often, these devices have different names or sector specific terms as you look across the industry. To track
-            these differences more accurately, we use the “Related Assets” field which associates these terms based on
-            similar functions, architectural location, and exposure to similar adversary techniques. Each related asset
-            includes a name, optional sector identifier, and a description to provide nuance to the asset page
-            definition.
-          </p>
-          <p>
-            Although originally represented under the platform field in ATT&amp;CK, Assets are distinctly separate from
-            platforms. Platforms generally describe the operating system or application (i.e., Microsoft Windows) while
-            Assets represent the device which includes considerations for hardware, software, architecture, systems, and
-            intended function. Assets may leverage platforms to describe a device’s commonly observed operating system.
-          </p>
-          <h6 class="table-object-count">Assets: {{ parsed.assets_list_len }}</h6>
+          <p>{{ localized.text("Assets represent the devices and systems commonly found within Industrial Control System environments. Each asset object includes a mapping of technique relationships that represent the adversary actions that may target the device based on its capability and function.", "دارایی‌ها دستگاه‌ها و سامانه‌هایی را نشان می‌دهند که معمولا در محیط‌های سامانه‌های کنترل صنعتی دیده می‌شوند. هر شی دارایی شامل نگاشتی از رابطه‌های تکنیک است که اقدام‌های مهاجم علیه آن دستگاه را بر اساس قابلیت و کارکرد آن نشان می‌دهد.") }}</p>
+          <p>{{ localized.text("Often, these devices have different names or sector specific terms as you look across the industry. To track these differences more accurately, we use the “Related Assets” field which associates these terms based on similar functions, architectural location, and exposure to similar adversary techniques. Each related asset includes a name, optional sector identifier, and a description to provide nuance to the asset page definition.", "این دستگاه‌ها در بخش‌های مختلف صنعت اغلب نام‌ها یا اصطلاحات تخصصی متفاوتی دارند. برای ردیابی دقیق‌تر این تفاوت‌ها، از فیلد «دارایی‌های مرتبط» استفاده می‌شود که این اصطلاحات را بر اساس کارکرد مشابه، جایگاه معماری و مواجهه با تکنیک‌های مشابه مهاجم به هم پیوند می‌دهد. هر دارایی مرتبط شامل نام، شناسه اختیاری بخش و توضیحی برای دقیق‌تر کردن تعریف صفحه دارایی است.") }}</p>
+          <p>{{ localized.text("Although originally represented under the platform field in ATT&CK, Assets are distinctly separate from platforms. Platforms generally describe the operating system or application (i.e., Microsoft Windows) while Assets represent the device which includes considerations for hardware, software, architecture, systems, and intended function. Assets may leverage platforms to describe a device’s commonly observed operating system.", "هرچند دارایی‌ها در ابتدا زیر فیلد سکو در ATT&CK نمایش داده می‌شدند، از سکوها متمایز هستند. سکوها معمولا سیستم‌عامل یا برنامه را توصیف می‌کنند، در حالی که دارایی‌ها خود دستگاه را با ملاحظات سخت‌افزار، نرم‌افزار، معماری، سامانه‌ها و کارکرد مورد انتظار نشان می‌دهند. دارایی‌ها ممکن است از سکوها برای توصیف سیستم‌عامل رایج مشاهده‌شده روی یک دستگاه استفاده کنند.") }}</p>
+          <h6 class="table-object-count">{{ localized.text("Assets:", "دارایی‌ها:") }} {{ parsed.assets_list_len }}</h6>
           <table class="table table-bordered table-alternate mt-2" aria-describedby="assets-table">
             <thead>
               <tr>
@@ -62,7 +48,7 @@
                   <a href="/assets/{{ row.id | upper }}"> {{ row.id | upper }} </a>
                 </td>
                 <td>
-                  <a href="/assets/{{ row.id | upper }}"> {{ row.name }} </a>
+                  <a href="/assets/{{ row.id | upper }}"> {{ localized.text(row.name, row.name_fa) }} </a>
                 </td>
                 <td>
                   {% for dom in row.domains %}
@@ -74,7 +60,7 @@
                   {% if row.deprecated %}
                   <span style="color:red">****Deprecation Warning****</span>
                   {% endif %}
-                  {{ clean_output.stixToHTML(row.descr) }}
+                  {{ localized.stix(row.descr, row.descr_fa) }}
                 </td>
               </tr>
               {% endfor %}

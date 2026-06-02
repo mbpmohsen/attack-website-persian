@@ -4,6 +4,7 @@
 {% set active_page = "groups" -%}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% block innerleft %}
 <!--stop-indexing-for-search-->
@@ -26,31 +27,25 @@
         <div class="overflow-x-auto">
           <h1>Groups</h1>
           <p>
-            Groups are activity clusters that are tracked by a common name in the security community.
-            Analysts track these clusters using various analytic methodologies and terms such as threat groups, activity
-            groups, and threat actors.
-            Some groups have multiple names associated with similar activities due to various organizations tracking
-            similar activities by different names.
-            Organizations' group definitions may partially overlap with groups designated by other organizations and may
-            disagree on specific activity.
+            {{ localized.text(
+              "Groups are activity clusters that are tracked by a common name in the security community. Analysts track these clusters using various analytic methodologies and terms such as threat groups, activity groups, and threat actors. Some groups have multiple names associated with similar activities due to various organizations tracking similar activities by different names. Organizations' group definitions may partially overlap with groups designated by other organizations and may disagree on specific activity.",
+              "گروه‌ها خوشه‌هایی از فعالیت هستند که در جامعه امنیتی با یک نام مشترک دنبال می‌شوند. تحلیلگران این خوشه‌ها را با روش‌ها و اصطلاحات مختلفی مانند گروه تهدید، گروه فعالیت و بازیگر تهدید ردیابی می‌کنند. برخی گروه‌ها به دلیل نام‌گذاری متفاوت سازمان‌ها برای فعالیت‌های مشابه، چند نام مرتبط دارند. تعریف گروه‌ها در سازمان‌های مختلف ممکن است تا حدی هم‌پوشانی داشته باشد یا درباره فعالیت‌های مشخص اختلاف داشته باشد."
+            ) }}
           </p>
           <p>
-            For the purposes of the Group pages, the MITRE ATT&CK team uses the term Group to refer to any of the above
-            designations for an adversary activity cluster.
-            The team makes a best effort to track overlaps between names based on publicly reported associations,
-            which are designated as “Associated Groups” on each page (formerly labeled “Aliases”), because we believe
-            these overlaps are useful for analyst awareness.
-            We do not represent these names as exact overlaps and encourage analysts to do additional research.
+            {{ localized.text(
+              "For the purposes of the Group pages, the MITRE ATT&CK team uses the term Group to refer to any of the above designations for an adversary activity cluster. The team makes a best effort to track overlaps between names based on publicly reported associations, which are designated as “Associated Groups” on each page (formerly labeled “Aliases”), because we believe these overlaps are useful for analyst awareness. We do not represent these names as exact overlaps and encourage analysts to do additional research.",
+              "در صفحه‌های گروه، تیم MITRE ATT&CK واژه گروه را برای اشاره به هر یک از این نام‌گذاری‌ها برای یک خوشه فعالیت دشمن به کار می‌برد. تیم تلاش می‌کند هم‌پوشانی نام‌ها را بر اساس ارتباطات گزارش‌شده عمومی دنبال کند؛ این موارد در هر صفحه با عنوان «گروه‌های مرتبط» نمایش داده می‌شوند، زیرا این هم‌پوشانی‌ها برای آگاهی تحلیلگران مفید هستند. این نام‌ها لزوما هم‌پوشانی دقیق محسوب نمی‌شوند و تحلیلگران باید پژوهش تکمیلی انجام دهند."
+            ) }}
           </p>
           <p>
-            Groups are mapped to publicly reported technique use and original references are included.
-            The information provided does not represent all possible technique use by Groups, but rather a subset that
-            is available solely through open source reporting.
-            Groups are also mapped to reported Software used and attributed Campaigns, and related techniques for each
-            are tracked separately on their respective pages.
+            {{ localized.text(
+              "Groups are mapped to publicly reported technique use and original references are included. The information provided does not represent all possible technique use by Groups, but rather a subset that is available solely through open source reporting. Groups are also mapped to reported Software used and attributed Campaigns, and related techniques for each are tracked separately on their respective pages.",
+              "گروه‌ها به استفاده از تکنیک‌هایی که به صورت عمومی گزارش شده‌اند نگاشت می‌شوند و منابع اصلی نیز درج می‌شوند. اطلاعات ارائه‌شده همه استفاده‌های ممکن گروه‌ها از تکنیک‌ها را نشان نمی‌دهد، بلکه زیرمجموعه‌ای است که فقط از گزارش‌های متن‌باز به دست آمده است. گروه‌ها همچنین به نرم‌افزارهای گزارش‌شده و کارزارهای منتسب نگاشت می‌شوند و تکنیک‌های مرتبط با هرکدام در صفحه‌های مربوط دنبال می‌شود."
+            ) }}
           </p>
 
-          <h6 class="table-object-count">Groups: {{ parsed.groups_list_len }}</h6>
+          <h6 class="table-object-count">{{ localized.text("Groups:", "گروه‌ها:") }} {{ parsed.groups_list_len }}</h6>
           <div class="tables-mobile">
             <table class="table table-bordered table-alternate mt-2">
               <thead>
@@ -68,7 +63,7 @@
                     <a href="/groups/{{ row.id | upper }}"> {{ row.id | upper }} </a>
                   </td>
                   <td>
-                    <a href="/groups/{{ row.id | upper }}"> {{ row.name }} </a>
+                    <a href="/groups/{{ row.id | upper }}"> {{ localized.text(row.name, row.name_fa) }} </a>
                   </td>
                   <td>
                     {{ row.aliases_list|join(", ") }}
@@ -77,7 +72,7 @@
                     {% if row.deprecated %}
                     <font color="red">****Deprecation Warning****</font>
                     {% endif %}
-                    {{ clean_output.stixToHTML(row.descr) }}
+                    {{ localized.stix(row.descr, row.descr_fa) }}
                   </td>
                 </tr>
                 {% endfor %}

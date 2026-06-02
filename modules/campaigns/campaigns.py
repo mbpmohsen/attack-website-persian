@@ -87,6 +87,7 @@ def generate_campaign_md(campaign, side_menu_data, notes):
             data["modified"] = dates["modified"]
         if campaign.get("name"):
             data["name"] = campaign["name"]
+            data["name_fa"] = campaign.get("name_fa")
         if campaign.get("x_mitre_version"):
             data["version"] = campaign["x_mitre_version"]
 
@@ -113,6 +114,7 @@ def generate_campaign_md(campaign, side_menu_data, notes):
 
         if campaign.get("description"):
             data["descr"] = campaign["description"]
+            data["descr_fa"] = campaign.get("description_fa")
 
         if campaign.get("x_mitre_deprecated"):
             data["deprecated"] = True
@@ -196,12 +198,14 @@ def get_campaigns_table_data(campaign_list):
             row = {
                 "id": attack_id,
                 "name": campaign["name"] if campaign.get("name") else attack_id,
+                "name_fa": campaign.get("name_fa"),
                 "first_seen": campaign_dates["first_seen"] if campaign_dates.get("first_seen") else "",
                 "last_seen": campaign_dates["last_seen"] if campaign_dates.get("last_seen") else "",
             }
 
             if campaign.get("description"):
                 row["descr"] = campaign["description"]
+                row["descr_fa"] = campaign.get("description_fa")
 
                 if campaign.get("x_mitre_deprecated"):
                     row["deprecated"] = True
@@ -224,10 +228,16 @@ def get_group_table_data(campaign, reference_list):
             group_id = group["object"]["id"]
             if group_id not in group_list:
                 attack_id = util.buildhelpers.get_attack_id(group["object"])
-                group_list[group_id] = {"id": attack_id, "name": group["object"]["name"]}
+                group_list[group_id] = {
+                    "id": attack_id,
+                    "name": group["object"]["name"],
+                    "name_fa": group["object"].get("name_fa"),
+                }
 
                 if group["relationship"].get("description"):
                     group_list[group_id]["desc"] = group["relationship"]["description"]
+                    if group["relationship"].get("description_fa"):
+                        group_list[group_id]["desc_fa"] = group["relationship"]["description_fa"]
 
                     # update reference list
                     reference_list = util.buildhelpers.update_reference_list(reference_list, group["relationship"])
@@ -280,9 +290,15 @@ def get_software_table_data(campaign, reference_list):
                 software_id = software["object"]["id"]
                 if software_id not in software_list:
                     attack_id = util.buildhelpers.get_attack_id(software["object"])
-                    software_list[software_id] = {"id": attack_id, "name": software["object"]["name"]}
+                    software_list[software_id] = {
+                        "id": attack_id,
+                        "name": software["object"]["name"],
+                        "name_fa": software["object"].get("name_fa"),
+                    }
                     if software["relationship"].get("description"):
                         software_list[software_id]["desc"] = software["relationship"]["description"]
+                        if software["relationship"].get("description_fa"):
+                            software_list[software_id]["desc_fa"] = software["relationship"]["description_fa"]
 
                         # update reference list
                         reference_list = util.buildhelpers.update_reference_list(

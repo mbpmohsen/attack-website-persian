@@ -5,6 +5,7 @@
 {% import 'macros/clean_output.html' as clean_output %}
 {% import 'macros/deprecated.html' as deprecated %}
 {% import 'macros/notes.html' as notes %}
+{% import 'macros/localized.html' as localized %}
 
 {% set parsed = page.data | from_json %}
 {% if parsed.domain == "mobile" %}
@@ -49,7 +50,7 @@
   {% elif parsed.domain == 'ics' %}
   <li class="breadcrumb-item"><a href="/tactics/ics">ICS</a></li>
   {% endif %}
-  <li class="breadcrumb-item">{{parsed.name}}</li>
+  <li class="breadcrumb-item">{{ localized.text(parsed.name, parsed.name_fa) }}</li>
 </ol>
 <div class="tab-pane fade show active" id="v-{{pages.title}}" role="tabpanel" aria-labelledby="v-{{pages.title}}-tab">
 </div>
@@ -58,7 +59,7 @@
     <div class="jumbotron jumbotron-fluid">
       <div class="container-fluid">
         <h1>
-          {{parsed.name}}
+          {{ localized.text(parsed.name, parsed.name_fa) }}
         </h1>
 
         {% if parsed.deprecated %}
@@ -71,7 +72,7 @@
         <div class="row">
           <div class="col-md-8">
             <div class="description-body">
-              {{clean_output.stixToHTML(parsed.descr)}}
+              {{ localized.stix(parsed.descr, parsed.descr_fa) }}
             </div>
             {% if parsed.notes %}
             {{ notes.notes_section(parsed.notes) }}
@@ -95,7 +96,7 @@
           </div>
         </div>
         <h2 class="pt-3" id="techniques">Techniques</h2>
-        <h6 class="table-object-count">Techniques: {{parsed.techniques_table_len}}</h6>
+        <h6 class="table-object-count">{{ localized.text("Techniques:", "تکنیک‌ها:") }} {{parsed.techniques_table_len}}</h6>
         {{technique_table.table_with_subtechniques(parsed.techniques_table)}}
         {% endif %}
       </div>

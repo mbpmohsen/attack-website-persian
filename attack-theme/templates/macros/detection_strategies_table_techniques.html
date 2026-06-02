@@ -1,4 +1,5 @@
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% macro detection_strategies_table_techniques(detection_strategies, citations) %}
 <div class="tables-mobile">
@@ -21,14 +22,14 @@
                             <a href="/detectionstrategies/{{detection_strategy.id}}">{{detection_strategy.id}}</a>
                         </td>
                         <td rowspan="{{ rowspan }}">
-                            <a href="/detectionstrategies/{{detection_strategy.id}}">{{detection_strategy.name}}</a>
+                            <a href="/detectionstrategies/{{detection_strategy.id}}">{{ localized.text(detection_strategy.name, detection_strategy.name_fa) }}</a>
                         </td>
                     {% endif %}
                     <td>
                         <a href="/detectionstrategies/{{detection_strategy.id}}#{{ analytic.id }}">{{ analytic.id }}</a>
                     </td>
                     <td>
-                        {{clean_output.stixToHTML(analytic.description, citations)}}</a>
+                        {{ localized.stix(analytic.description, analytic.description_fa, citations) }}
                     </td>
                 </tr>
             {% endfor %}

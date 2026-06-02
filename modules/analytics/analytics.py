@@ -66,9 +66,11 @@ def get_analytic_table(analytics):
         row = {
             "id": attack_id,
             "name": analytic.get("name"),
+            "name_fa": analytic.get("name_fa"),
             "platforms": analytic.get("x_mitre_platforms", []),
             "domains": domain_names,
             "description": analytic.get("description", ""),
+            "description_fa": analytic.get("description_fa"),
             "deprecated": analytic.get("x_mitre_deprecated", False),
             "detection_strategy": get_related_detection_strategies(analytic["id"]),
             "url": util.buildhelpers.get_analytic_url(analytic),

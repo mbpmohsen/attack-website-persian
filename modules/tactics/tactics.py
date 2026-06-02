@@ -113,6 +113,7 @@ def generate_tactic_md(tactic, domain, tactic_list, techniques, side_nav_data, n
 
         data["attack_id"] = attack_id
         data["name"] = tactic["name"]
+        data["name_fa"] = tactic.get("name_fa")
         data["name_lower"] = tactic["name"].lower()
         data["side_menu_data"] = side_nav_data
         data["domain"] = domain.split("-")[0]
@@ -126,6 +127,7 @@ def generate_tactic_md(tactic, domain, tactic_list, techniques, side_nav_data, n
         # Add more detail if descriptione exists and it is not deprecated
         if tactic.get("description") and not data["deprecated"]:
             data["descr"] = tactic["description"]
+            data["descr_fa"] = tactic.get("description_fa")
 
             dates = util.buildhelpers.get_created_and_modified_dates(tactic)
 
@@ -168,8 +170,10 @@ def get_domain_table_data(tactic_list):
             # Create json and fill out with tactic data
             tactic_dict = {}
             tactic_dict["name"] = tactic["name"]
+            tactic_dict["name_fa"] = tactic.get("name_fa")
             tactic_dict["tid"] = attack_id
             tactic_dict["description"] = tactic["description"]
+            tactic_dict["description_fa"] = tactic.get("description_fa")
             tactic_table.append(tactic_dict)
 
     return tactic_table

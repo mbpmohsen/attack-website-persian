@@ -2,6 +2,7 @@
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
 {% import 'macros/deprecated.html' as deprecated %}
+{% import 'macros/localized.html' as localized %}
 
 {% set parsed = page.data | from_json %}
 {% if parsed.domain == "mobile" %}
@@ -53,28 +54,24 @@
             <div class="col-md-10">
               <h1>
                 {% if parsed.domain == "mobile" %}
-                Mobile Tactics
+                {{ localized.text("Mobile Tactics", "تاکتیک‌های موبایل") }}
                 {% elif parsed.domain == "enterprise" %}
-                Enterprise tactics
+                {{ localized.text("Enterprise Tactics", "تاکتیک‌های سازمانی") }}
                 {% elif parsed.domain == "ics" %}
-                ICS tactics
+                {{ localized.text("ICS Tactics", "تاکتیک‌های سامانه‌های کنترل صنعتی") }}
                 {% endif %}
               </h1>
-              <p>
-                Tactics represent the &quot;why&quot; of an ATT&CK technique or sub-technique. It is the adversary's
-                tactical goal: the reason for performing an action. For example, an adversary may want to achieve
-                credential access.
-              </p>
+              <p>{{ localized.text("Tactics represent the \"why\" of an ATT&CK technique or sub-technique. It is the adversary's tactical goal: the reason for performing an action. For example, an adversary may want to achieve credential access.", "تاکتیک‌ها «چرایی» یک تکنیک یا زیرتکنیک ATT&CK را نشان می‌دهند. تاکتیک هدف عملیاتی مهاجم است؛ یعنی دلیل انجام یک اقدام. برای نمونه، مهاجم ممکن است بخواهد به دسترسی به اعتبارنامه‌ها برسد.") }}</p>
             </div>
             <div class="col-md-2 div-count">
               {% if parsed.domain == "mobile" %}
-              <h6 class="table-object-count">Mobile Tactics: {{ parsed.tactics_list_len }}</h6>
+              <h6 class="table-object-count">{{ localized.text("Mobile Tactics:", "تاکتیک‌های موبایل:") }} {{ parsed.tactics_list_len }}</h6>
               {% elif parsed.domain == "enterprise" %}
-              <h6 class="table-object-count">Enterprise Tactics: {{ parsed.tactics_list_len }}</h6>
+              <h6 class="table-object-count">{{ localized.text("Enterprise Tactics:", "تاکتیک‌های سازمانی:") }} {{ parsed.tactics_list_len }}</h6>
               {% elif parsed.domain == "ics" %}
-              <h6 class="table-object-count">ICS Tactics: {{ parsed.tactics_list_len }}</h6>
+              <h6 class="table-object-count">{{ localized.text("ICS Tactics:", "تاکتیک‌های سامانه‌های کنترل صنعتی:") }} {{ parsed.tactics_list_len }}</h6>
               {% else %}
-              <h6 class="table-object-count">Tactics: {{ parsed.tactics_list_len }}</h6>
+              <h6 class="table-object-count">{{ localized.text("Tactics:", "تاکتیک‌ها:") }} {{ parsed.tactics_list_len }}</h6>
               {% endif %}
             </div>
           </div>
@@ -96,10 +93,10 @@
                         <a href="/tactics/{{tactic.tid}}">{{tactic.tid}}</a>
                       </td>
                       <td>
-                        <a href="/tactics/{{tactic.tid}}">{{tactic.name}}</a>
+                        <a href="/tactics/{{tactic.tid}}">{{ localized.text(tactic.name, tactic.name_fa) }}</a>
                       </td>
                       <td>
-                        {{clean_output.stixToHTML(tactic.description, firstParagraphOnly=True)}}
+                        {{ localized.stix(tactic.description, tactic.description_fa, firstParagraphOnly=True) }}
                       </td>
                     </tr>
                     {% endfor %}

@@ -99,6 +99,7 @@ def generate_mitigation_md(mitigation, domain, side_menu_data, notes):
         data["domain"] = domain.split("-")[0]
         data["side_menu_data"] = side_menu_data
         data["name"] = mitigation["name"]
+        data["name_fa"] = mitigation.get("name_fa")
         data["notes"] = notes.get(mitigation["id"])
 
         dates = util.buildhelpers.get_created_and_modified_dates(mitigation)
@@ -117,6 +118,7 @@ def generate_mitigation_md(mitigation, domain, side_menu_data, notes):
 
         if mitigation.get("description"):
             data["descr"] = mitigation["description"]
+            data["descr_fa"] = mitigation.get("description_fa")
 
         if mitigation.get("x_mitre_deprecated"):
             data["deprecated"] = True
@@ -194,8 +196,10 @@ def get_mitigation_table_data(mitigation_list):
             row["id"] = attack_id
 
             row["name"] = mitigation["name"]
+            row["name_fa"] = mitigation.get("name_fa")
 
             row["descr"] = mitigation["description"]
+            row["descr_fa"] = mitigation.get("description_fa")
 
             if mitigation.get("x_mitre_deprecated"):
                 row["deprecated"] = True

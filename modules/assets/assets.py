@@ -78,6 +78,7 @@ def generate_asset_md(asset, side_menu_data, notes):
         data["modified"] = dates["modified"]
     if asset.get("name"):
         data["name"] = asset["name"]
+        data["name_fa"] = asset.get("name_fa")
     if asset.get("x_mitre_version"):
         data["version"] = asset["x_mitre_version"]
 
@@ -100,6 +101,7 @@ def generate_asset_md(asset, side_menu_data, notes):
 
     if asset.get("description"):
         data["descr"] = asset["description"]
+        data["descr_fa"] = asset.get("description_fa")
     if asset.get("x_mitre_deprecated"):
         data["deprecated"] = True
 
@@ -172,6 +174,7 @@ def get_assets_table_data(asset_list):
         row = {
             "id": attack_id,
             "name": asset["name"] if asset.get("name") else attack_id,
+            "name_fa": asset.get("name_fa"),
         }
 
         for domain_idx in range(len(domain_list)):
@@ -184,6 +187,7 @@ def get_assets_table_data(asset_list):
 
         if asset.get("description"):
             row["descr"] = asset["description"]
+            row["descr_fa"] = asset.get("description_fa")
 
         if asset.get("x_mitre_deprecated"):
             row["deprecated"] = True
@@ -201,12 +205,14 @@ def get_related_asset_data(related_assets):
     for related_asset in related_assets:
         row = {
             "name": related_asset["name"],  # required
+            "name_fa": related_asset.get("name_fa"),
         }
         if related_asset.get("related_asset_sectors"):
             related_asset["related_asset_sectors"].sort()
             row["sectors"] = ", ".join(related_asset["related_asset_sectors"])
         if related_asset.get("description"):
             row["descr"] = related_asset["description"]
+            row["descr_fa"] = related_asset.get("description_fa")
         related_asset_data.append(row)
     return related_asset_data
 

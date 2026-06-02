@@ -1,6 +1,7 @@
 {% extends "general/two-column.html" %}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% set parsed = page.data | from_json %}
 {% if parsed.domain == "mobile" %}
@@ -42,21 +43,18 @@
             <div class="col-md-10">
               <h1>
                 {% if parsed.domain == "mobile" %}
-                Mobile Mitigations
+                {{ localized.text("Mobile Mitigations", "راهکارهای کاهش خطر موبایل") }}
                 {% elif parsed.domain == "enterprise" %}
-                Enterprise Mitigations
+                {{ localized.text("Enterprise Mitigations", "راهکارهای کاهش خطر سازمانی") }}
                 {% elif parsed.domain == "ics" %}
-                ICS Mitigations
+                {{ localized.text("ICS Mitigations", "راهکارهای کاهش خطر سامانه‌های کنترل صنعتی") }}
                 {% endif %}
               </h1>
 
-              <p>
-                Mitigations represent security concepts and classes of technologies that can be used to prevent a
-                technique or sub-technique from being successfully executed.
-              </p>
+              <p>{{ localized.text("Mitigations represent security concepts and classes of technologies that can be used to prevent a technique or sub-technique from being successfully executed.", "راهکارهای کاهش خطر، مفاهیم امنیتی و دسته‌هایی از فناوری‌ها را نشان می‌دهند که می‌توانند از اجرای موفق یک تکنیک یا زیرتکنیک جلوگیری کنند.") }}</p>
             </div>
             <div class="col-md-2 div-count">
-              <h6 class="table-object-count">Mitigations: {{parsed.mitigation_list_len}}</h6>
+              <h6 class="table-object-count">{{ localized.text("Mitigations:", "راهکارهای کاهش خطر:") }} {{parsed.mitigation_list_len}}</h6>
             </div>
           </div>
           <div class="tables-mobile">
@@ -75,10 +73,10 @@
                     <a href="/mitigations/{{row.id}}"> {{row.id}} </a>
                   </td>
                   <td>
-                    <a href="/mitigations/{{row.id}}"> {{row.name}} </a>
+                    <a href="/mitigations/{{row.id}}"> {{ localized.text(row.name, row.name_fa) }} </a>
                   </td>
                   <td>
-                    {{clean_output.stixToHTML(row.descr, firstParagraphOnly=True)}}
+                    {{ localized.stix(row.descr, row.descr_fa, firstParagraphOnly=True) }}
                   </td>
                 </tr>
                 {% endfor %}

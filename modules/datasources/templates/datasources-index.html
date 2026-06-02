@@ -5,6 +5,7 @@
 {% import 'macros/deprecated.html' as deprecated %}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% block innerleft %}
 <!--stop-indexing-for-search-->
@@ -33,9 +34,7 @@
             and our <a href='https://attack.mitre.org/resources/updates/updates-october-2025/'>ATT&CK v18 release notes</a>.
             The data sources page will remain available for reference, but no new data sources will be added to the framework.") }}
           <br>
-          <p>Data sources represent the various subjects/topics of information that can be collected by sensors/logs.
-            Data sources also include data components, which identify specific properties/values of a data source
-            relevant to detecting a given ATT&CK technique or sub-technique.</p>
+          <p>{{ localized.text("Data sources represent the various subjects/topics of information that can be collected by sensors/logs. Data sources also include data components, which identify specific properties/values of a data source relevant to detecting a given ATT&CK technique or sub-technique.", "منابع داده موضوع‌ها و انواع مختلف اطلاعاتی را نشان می‌دهند که می‌توان آن‌ها را از حسگرها یا لاگ‌ها جمع‌آوری کرد. منابع داده همچنین شامل مولفه‌های داده هستند که ویژگی‌ها یا مقدارهای مشخص یک منبع داده را برای تشخیص یک تکنیک یا زیرتکنیک ATT&CK مشخص می‌کنند.") }}</p>
           <h6 class="table-object-count"></h6>
           <table class="table table-bordered table-alternate mt-2" id="ds-table">
             <thead>
@@ -80,7 +79,7 @@
                   <a href="/datasources/{{row.id|upper}}"> {{row.id|upper}} </a>
                 </td>
                 <td>
-                  <a href="/datasources/{{row.id|upper}}"> {{row.name}} </a>
+                  <a href="/datasources/{{row.id|upper}}"> {{ localized.text(row.name, row.name_fa) }} </a>
                 </td>
                 <td>
                   {% for dom in row.domains %}
@@ -92,7 +91,7 @@
                   {% if row.deprecated %}
                   <font color="red">****Deprecation Warning****</font>
                   {% endif %}
-                  {{clean_output.stixToHTML(row.descr)}}
+                  {{ localized.stix(row.descr, row.descr_fa) }}
                 </td>
               </tr>
               {% endfor %}

@@ -92,6 +92,7 @@ def get_detection_strategy_table(detection_strategy_list):
         row = {
             "id": attack_id,
             "name": detection_strategy.get("name"),
+            "name_fa": detection_strategy.get("name_fa"),
             "domains": domain_names,
             "deprecated": detection_strategy.get("x_mitre_deprecated", False),
         }
@@ -122,6 +123,7 @@ def generate_detection_strategy_md(detection_strategy, notes):
         "created": dates.get("created"),
         "modified": dates.get("modified"),
         "name": detection_strategy.get("name"),
+        "name_fa": detection_strategy.get("name_fa"),
         "domains": domain_names,
         "version": detection_strategy.get("x_mitre_version"),
         "contributors": detection_strategy.get("x_mitre_contributors", []),
@@ -161,8 +163,10 @@ def get_technique_detected_data(detection_strategy, reference_list):
     relationship = technique_detected[0]["relationship"]
     technique_data = {
         "name": technique["name"],
+        "name_fa": technique.get("name_fa"),
         "attack_id": attack_id,
         "detects": relationship.get("description", ""),
+        "detects_fa": relationship.get("description_fa", ""),
         "url": f"/techniques/{attack_id.replace('.', '/')}",
     }
     reference_list = util.buildhelpers.update_reference_list(reference_list, relationship)
@@ -191,6 +195,7 @@ def build_analytics_by_platform(detection_strategy, reference_list):
         analytic_data = {
             "id": attack_id,
             "description": analytic.get("description", ""),
+            "description_fa": analytic.get("description_fa"),
             "url": f"/analytics/{attack_id}",
             "log_source_table": build_log_source_table(analytic),
             "mutable_elements": analytic.get("x_mitre_mutable_elements", []),
@@ -241,6 +246,7 @@ def build_log_source_table(analytic):
             log_source_dict[datacomponent_id] = {
                 "datacomponent": {
                     "name": datacomponent.get("name"),
+                    "name_fa": datacomponent.get("name_fa"),
                     "url": f"/datacomponents/{datacomponent_id}",
                 },
                 "log_sources": [],

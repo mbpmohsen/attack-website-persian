@@ -1,4 +1,5 @@
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% macro datasource_table(datasources, show_descriptions, citations=None) %}
 <div class="tables-mobile">
@@ -20,15 +21,15 @@
                     <a href="/datasources/{{datasource.attack_id}}">{{datasource.attack_id}}</a>
                 </td>
                 <td class="nowrap">
-                    <a href="/datasources/{{datasource.attack_id}}">{{datasource.name}}</a>
+                    <a href="/datasources/{{datasource.attack_id}}">{{ localized.text(datasource.name, datasource.name_fa) }}</a>
                 </td>
                 <!-- Add first data component here -->
                 <td> 
-                    <a href="/datasources/{{datasource.attack_id}}/#{{datasource.datacomponents[0].name | escape_spaces}}">{{datasource.datacomponents[0].name}}</a>
+                    <a href="/datasources/{{datasource.attack_id}}/#{{datasource.datacomponents[0].name | escape_spaces}}">{{ localized.text(datasource.datacomponents[0].name, datasource.datacomponents[0].name_fa) }}</a>
                 </td>
                 {% if show_descriptions %}
                     <td>
-                        {{clean_output.stixToHTML(datasource.datacomponents[0].descr, citations)}}
+                        {{ localized.stix(datasource.datacomponents[0].descr, datasource.datacomponents[0].descr_fa, citations) }}
                     </td>
                 {% endif %}
             </tr>
@@ -38,11 +39,11 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <a href="/datasources/{{datasource.attack_id}}/#{{datacomponent.name | escape_spaces}}">{{datacomponent.name}}</a>
+                            <a href="/datasources/{{datasource.attack_id}}/#{{datacomponent.name | escape_spaces}}">{{ localized.text(datacomponent.name, datacomponent.name_fa) }}</a>
                         </td>
                         {% if show_descriptions %}
                             <td>
-                                {{clean_output.stixToHTML(datacomponent.descr, citations)}}
+                                {{ localized.stix(datacomponent.descr, datacomponent.descr_fa, citations) }}
                             </td>
                         {% endif %}
                     </tr>

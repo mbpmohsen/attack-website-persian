@@ -4,6 +4,7 @@
 {% set active_page = "campaigns" -%}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% block innerleft %}
 <!--stop-indexing-for-search-->
@@ -25,39 +26,12 @@
       <div class="container-fluid">
         <div class="overflow-x-auto">
           <h1>Campaigns</h1>
-          <p>
-            The security community tracks intrusion activity using various analytic methodologies and terms, such as
-            operations, intrusion sets, and campaigns.
-            Some intrusion activity may be referenced by a variety of names due to different organizations tracking
-            similar activity, often from different vantage points;
-            conversely other times reported activity is not given a designated name.
-          </p>
-          <p>
-            Malicious cyber activity may be attributed to a threat group, or referenced as unattributed activity.
-            Alternatively, complex cyber operations may involve multiple affiliated or unaffiliated groups, with each
-            playing a unique role
-            (ie. initial access, data exfiltration, etc).
-          </p>
-          <p>
-            For the purposes of the Campaigns page, the MITRE ATT&CK team uses the term Campaign to describe any
-            grouping of intrusion activity
-            conducted over a specific period of time with common targets and objectives.
-            Unnamed intrusion activity is cited using a unique ATT&CK identifier, otherwise the team will use the
-            activity name as noted in public reporting.
-            For named Campaigns, the team makes a best effort to track overlapping names, which are designated as
-            “Associated Campaigns” on each page,
-            as we believe these overlaps are useful for analysts.
-            Campaign entries will also be attributed to ATT&CK Group and Software pages, when possible, based on public
-            reporting;
-            unattributed activity will simply reference “threat actors” in the procedure example.
-          </p>
-          <p>
-            Campaigns are mapped to publicly reporting techniques and original references are included.
-            The information provided does not represent all possible techniques used in a Campaign but rather a subset
-            that is available through open source reporting.
-          </p>
+          <p>{{ localized.text("The security community tracks intrusion activity using various analytic methodologies and terms, such as operations, intrusion sets, and campaigns. Some intrusion activity may be referenced by a variety of names due to different organizations tracking similar activity, often from different vantage points; conversely other times reported activity is not given a designated name.", "جامعه امنیتی فعالیت نفوذ را با روش‌ها و اصطلاحات تحلیلی مختلفی مانند عملیات، مجموعه‌های نفوذ و کارزارها ردیابی می‌کند. بعضی فعالیت‌های نفوذ ممکن است به دلیل ردیابی فعالیت مشابه توسط سازمان‌های مختلف و از زاویه‌های متفاوت، با نام‌های گوناگون شناخته شوند؛ در موارد دیگر نیز فعالیت گزارش‌شده نام مشخصی ندارد.") }}</p>
+          <p>{{ localized.text("Malicious cyber activity may be attributed to a threat group, or referenced as unattributed activity. Alternatively, complex cyber operations may involve multiple affiliated or unaffiliated groups, with each playing a unique role (ie. initial access, data exfiltration, etc).", "فعالیت سایبری مخرب ممکن است به یک گروه تهدید نسبت داده شود یا به عنوان فعالیت بدون انتساب ذکر شود. همچنین عملیات سایبری پیچیده ممکن است چند گروه وابسته یا غیر وابسته را درگیر کند که هر کدام نقشی جداگانه مانند دسترسی اولیه یا برون‌بری داده دارند.") }}</p>
+          <p>{{ localized.text("For the purposes of the Campaigns page, the MITRE ATT&CK team uses the term Campaign to describe any grouping of intrusion activity conducted over a specific period of time with common targets and objectives. Unnamed intrusion activity is cited using a unique ATT&CK identifier, otherwise the team will use the activity name as noted in public reporting. For named Campaigns, the team makes a best effort to track overlapping names, which are designated as “Associated Campaigns” on each page, as we believe these overlaps are useful for analysts. Campaign entries will also be attributed to ATT&CK Group and Software pages, when possible, based on public reporting; unattributed activity will simply reference “threat actors” in the procedure example.", "در صفحه کارزارها، تیم MITRE ATT&CK واژه کارزار را برای توصیف مجموعه‌ای از فعالیت‌های نفوذ به کار می‌برد که در یک بازه زمانی مشخص و با اهداف و مقصدهای مشترک انجام شده‌اند. فعالیت نفوذ بدون نام با یک شناسه یکتای ATT&CK ارجاع داده می‌شود و در غیر این صورت از نام ذکرشده در گزارش عمومی استفاده می‌شود. برای کارزارهای نام‌دار، تیم تا حد امکان نام‌های هم‌پوشان را ردیابی می‌کند و آن‌ها را در هر صفحه به عنوان «کارزارهای مرتبط» نشان می‌دهد. ورودی‌های کارزار نیز در صورت امکان و بر پایه گزارش‌های عمومی به صفحه‌های گروه و نرم‌افزار ATT&CK نسبت داده می‌شوند؛ فعالیت بدون انتساب در نمونه رویه فقط به «عاملان تهدید» اشاره می‌کند.") }}</p>
+          <p>{{ localized.text("Campaigns are mapped to publicly reporting techniques and original references are included. The information provided does not represent all possible techniques used in a Campaign but rather a subset that is available through open source reporting.", "کارزارها به تکنیک‌هایی که در گزارش‌های عمومی آمده‌اند نگاشت می‌شوند و ارجاع‌های اصلی نیز درج می‌گردند. اطلاعات ارائه‌شده همه تکنیک‌های ممکن استفاده‌شده در یک کارزار را نشان نمی‌دهد، بلکه زیرمجموعه‌ای است که از گزارش‌های متن‌باز در دسترس است.") }}</p>
 
-          <h6 class="table-object-count">Campaigns: {{ parsed.campaigns_list_len }}</h6>
+          <h6 class="table-object-count">{{ localized.text("Campaigns:", "کارزارها:") }} {{ parsed.campaigns_list_len }}</h6>
           <div class="tables-mobile">
             <table class="table table-bordered table-alternate mt-2">
               <thead>
@@ -77,7 +51,7 @@
                     <a href="/campaigns/{{ row.id | upper }}"> {{ row.id | upper }} </a>
                   </td>
                   <td>
-                    <a href="/campaigns/{{ row.id | upper }}"> {{ row.name }} </a>
+                    <a href="/campaigns/{{ row.id | upper }}"> {{ localized.text(row.name, row.name_fa) }} </a>
                   </td>
                   <!-- <td>{{row.first_seen}}</td> -->
                   <!-- <td>{{row.last_seen}}</td> -->
@@ -86,7 +60,7 @@
                     {% if row.deprecated %}
                     <font color="red">****Deprecation Warning****</font>
                     {% endif %}
-                    {{ clean_output.stixToHTML(row.descr) }}
+                    {{ localized.stix(row.descr, row.descr_fa) }}
                   </td>
                 </tr>
                 {% endfor %}

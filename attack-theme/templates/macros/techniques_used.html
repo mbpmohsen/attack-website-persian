@@ -1,20 +1,21 @@
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% macro techniques_used(technique_table_data, title, domain, type, citations=None) %}
 {% if title %}
-<h2 class="pt-3 mb-2" id="techniques">{{title}}</h2>
+<h2 class="pt-3 mb-2" id="techniques">{{ title }}</h2>
 {% endif %}
 <div class="tables-mobile">
 <table class="table techniques-used background table-bordered">
     <thead>
         <tr>
             {% if domain %}
-            <th class="p-2" scope="col">Domain</th>
+            <th class="p-2" scope="col">{{ localized.text("Domain", "دامنه") }}</th>
             {% endif %}
             <th class="p-2" colspan="2">ID</th>
-            <th class="p-2" scope="col">Name</th>
+            <th class="p-2" scope="col">{{ localized.text("Name", "نام") }}</th>
             {% if type %}
-            <th class="p-2" scope="col">{{type}}</th>
+            <th class="p-2" scope="col">{{ type }}</th>
             {% endif %}
         </tr>
     </thead>
@@ -29,11 +30,11 @@
                     {% if domain %}
                     <td>
                         {% if technique.domain == "enterprise" %}
-                            Enterprise
+                            {{ localized.text("Enterprise", "سازمانی") }}
                         {% elif technique.domain == "mobile" %}
-                            Mobile
+                            {{ localized.text("Mobile", "موبایل") }}
                         {% elif technique.domain == "ics" %}
-                            ICS
+                            {{ localized.text("ICS", "سامانه‌های کنترل صنعتی") }}
                         {% endif %}
                     </td>
                     {% endif %}
@@ -41,11 +42,11 @@
                         <a href="/techniques/{{technique.id}}">{{technique.id}}</a>
                     </td>
                     <td>
-                        <a href="/techniques/{{technique.id}}">{{technique.name}}</a>
+                        <a href="/techniques/{{technique.id}}">{{ localized.text(technique.name, technique.name_fa) }}</a>
                     </td>
                     {% if type %}
                     <td>
-                        {{clean_output.stixToHTML(technique.descr, citations)}}
+                        {{ localized.stix(technique.descr, technique.descr_fa, citations) }}
                     </td>
                     {% endif %}
                 </tr>
@@ -63,11 +64,11 @@
                             <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">.{{subtechnique.id}}</a>
                         </td>
                         <td>
-                            <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">{{subtechnique.name}}</a>
+                            <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">{{ localized.text(subtechnique.name, subtechnique.name_fa) }}</a>
                         </td>
                         {% if type %}
                         <td>
-                            {{clean_output.stixToHTML(subtechnique.descr, citations)}}
+                            {{ localized.stix(subtechnique.descr, subtechnique.descr_fa, citations) }}
                         </td>
                         {% endif %}
                     </tr>
@@ -83,11 +84,11 @@
                             {% if domain %}
                             <td>
                                 {% if technique.domain == "enterprise" %}
-                                    Enterprise
+                                    {{ localized.text("Enterprise", "سازمانی") }}
                                 {% elif technique.domain == "mobile" %}
-                                    Mobile
+                                    {{ localized.text("Mobile", "موبایل") }}
                                 {% elif technique.domain == "ics" %}
-                                    ICS
+                                    {{ localized.text("ICS", "سامانه‌های کنترل صنعتی") }}
                                 {% endif %} 
                             </td>
                             {% endif %}
@@ -98,11 +99,11 @@
                                 <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">.{{subtechnique.id}}</a>
                             </td>
                             <td>
-                                <a href="/techniques/{{technique.id}}">{{technique.name}}</a>: <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">{{subtechnique.name}}</a>
+                                <a href="/techniques/{{technique.id}}">{{ localized.text(technique.name, technique.name_fa) }}</a>: <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">{{ localized.text(subtechnique.name, subtechnique.name_fa) }}</a>
                             </td>
                             {% if type %}
                             <td>
-                                {{clean_output.stixToHTML(subtechnique.descr, citations)}}
+                                {{ localized.stix(subtechnique.descr, subtechnique.descr_fa, citations) }}
                             </td>
                             {% endif %}
                         </tr>
@@ -120,11 +121,11 @@
                                 <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">.{{subtechnique.id}}</a>
                             </td>
                             <td>
-                                <a href="/techniques/{{technique.id}}">{{technique.name}}</a>: <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">{{subtechnique.name}}</a>
+                                <a href="/techniques/{{technique.id}}">{{ localized.text(technique.name, technique.name_fa) }}</a>: <a href="/techniques/{{technique.id}}/{{subtechnique.id}}">{{ localized.text(subtechnique.name, subtechnique.name_fa) }}</a>
                             </td>
                             {% if type %}
                             <td>
-                                {{clean_output.stixToHTML(subtechnique.descr, citations)}}
+                                {{ localized.stix(subtechnique.descr, subtechnique.descr_fa, citations) }}
                             </td>
                             {% endif %}
                         </tr>                        

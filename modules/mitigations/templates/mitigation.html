@@ -7,6 +7,7 @@
 {% import 'macros/citations.html' as citations %}
 {% import 'macros/notes.html' as notes %}
 {% import 'macros/navigator.html' as navigator %}
+{% import 'macros/localized.html' as localized %}
 
 {% set parsed = page.data | from_json %}
 {% if parsed.domain == "mobile" %}
@@ -35,7 +36,7 @@
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="/">Home</a></li>
   <li class="breadcrumb-item"><a href="/mitigations">Mitigations</a></li>
-  <li class="breadcrumb-item">{{parsed.name}}</li>
+  <li class="breadcrumb-item">{{ localized.text(parsed.name, parsed.name_fa) }}</li>
 </ol>
 <div class="tab-pane fade show active" id="v-{{pages.title}}" role="tabpanel" aria-labelledby="v-{{pages.title}}-tab">
 </div>
@@ -44,7 +45,7 @@
     <div class="jumbotron jumbotron-fluid">
       <div class="container-fluid">
         <h1>
-          {{parsed.name}}
+          {{ localized.text(parsed.name, parsed.name_fa) }}
         </h1>
 
         {% if parsed.deprecated %}
@@ -58,7 +59,7 @@
           <div class="col-md-8">
             {% if parsed.descr %}
             <div class="description-body">
-              {{clean_output.stixToHTML(parsed.descr, parsed.citations)}}
+              {{ localized.stix(parsed.descr, parsed.descr_fa, parsed.citations) }}
             </div>
             {% endif %}
             {% if parsed.notes %}

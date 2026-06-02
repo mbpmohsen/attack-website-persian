@@ -1,4 +1,5 @@
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% macro detection_strategies_table_datacomponents(detection_strategies) %}
 <div class="tables-mobile">
@@ -17,7 +18,7 @@
                     <a href="/detectionstrategies/{{detection_strategy.attack_id}}">{{detection_strategy.attack_id}}</a>
                 </td>
                 <td rowspan="{{ rowspan }}">
-                    <a href="/detectionstrategies/{{detection_strategy.attack_id}}">{{detection_strategy.name}}</a>
+                    <a href="/detectionstrategies/{{detection_strategy.attack_id}}">{{ localized.text(detection_strategy.name, detection_strategy.name_fa) }}</a>
                 </td>
                 <td rowspan="{{ rowspan }}">
                     <a href="{{detection_strategy.technique_url}}">{{detection_strategy.technique_attack_id}}</a>

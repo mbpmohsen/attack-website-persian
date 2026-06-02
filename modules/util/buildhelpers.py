@@ -237,6 +237,8 @@ def get_alias_data(alias_list, ext_refs):
                 row = {}
                 row["name"] = alias
                 row["descr"] = ext["description"]
+                if ext.get("description_fa"):
+                    row["descr_fa"] = ext["description_fa"]
                 alias_data.append(row)
 
     return alias_data
@@ -285,11 +287,13 @@ def get_technique_table_data(tactic, techniques_list):
             row = {}
             row["tid"] = attack_id
             row["descr"] = tech["description"]
+            row["descr_fa"] = tech.get("description_fa")
 
             if tactic is None and tech.get("x_mitre_deprecated"):
                 row["deprecated"] = True
 
             row["technique_name"] = tech["name"]
+            row["technique_name_fa"] = tech.get("name_fa")
 
             # Get sub-techniques if available
             row["subtechniques"] = []
@@ -298,12 +302,14 @@ def get_technique_table_data(tactic, techniques_list):
                 for subtechnique in subtechniques:
                     sub_data = {}
                     sub_data["name"] = subtechnique["object"]["name"]
+                    sub_data["name_fa"] = subtechnique["object"].get("name_fa")
                     sub_attack_id = get_attack_id(subtechnique["object"])
                     if sub_attack_id:
                         if "." not in sub_attack_id:
                             raise Exception(f"{attack_id} subtechnique's attackID '{sub_attack_id}' is malformed")
                         sub_data["id"] = sub_attack_id.split(".")[1]
                         sub_data["descr"] = subtechnique["object"]["description"]
+                        sub_data["descr_fa"] = subtechnique["object"].get("description_fa")
 
                         revoked = is_revoked(sdo=subtechnique["object"])
                         deprecated = is_deprecated(sdo=subtechnique["object"])
@@ -337,6 +343,7 @@ def get_side_nav_domains_data(side_nav_title, elements_list, domain_page=True, u
             set_sidebar_element_name = element["external_references"][0]["external_id"]
         return {
             "name": set_sidebar_element_name,
+            "name_fa": element.get("name_fa") if use_name_or_id == "name" else None,
             "id": set_sidebar_element_name,
             "path": "/{}/{}/".format(title_in_url, attack_id),
             "children": [],
@@ -350,6 +357,7 @@ def get_side_nav_domains_data(side_nav_title, elements_list, domain_page=True, u
         if elements_list[domain["name"]]:
             domain_data = {
                 "name": domain["alias"],
+                "name_fa": get_static_fa_label(domain["alias"]),
                 "id": domain["name"].split("-")[0],
                 "path": "/{}/{}/".format(title_in_url, domain["name"].split("-")[0]) if domain_page else None,
                 "children": [],
@@ -365,6 +373,7 @@ def get_side_nav_domains_data(side_nav_title, elements_list, domain_page=True, u
     # return side menu
     return {
         "name": side_nav_title,
+        "name_fa": get_static_fa_label(side_nav_title),
         "id": title_in_url,
         "path": None,  # root level doesn't get a path
         "children": elements_data,
@@ -381,6 +390,7 @@ def get_side_menu_data(side_nav_title, path_prefix, elements_list, domain=None):
         if attack_id:
             row = {
                 "name": element["name"],
+                "name_fa": element.get("name_fa"),
                 "id": element["name"],
                 "path": path_prefix + attack_id + "/",
                 "children": [],
@@ -392,6 +402,7 @@ def get_side_menu_data(side_nav_title, path_prefix, elements_list, domain=None):
     # return side menu
     return {
         "name": side_nav_title,
+        "name_fa": get_static_fa_label(side_nav_title),
         "id": side_nav_title,
         "path": path_prefix,  # root level doesn't get a path
         "children": elements_data,
@@ -425,14 +436,14 @@ def get_sub_technique_id(sub_tid):
     return sub_tid.split(".")[1]
 
 
-def get_technique_name(tid):
-    """Given a technique id, return the technique name."""
+def get_technique_name(tid, field="name"):
+    """Given a technique id, return the requested technique name field."""
     technique_list = relationshipgetters.get_technique_list()
 
     for technique in technique_list:
         attack_id = get_attack_id(technique)
         if attack_id == tid:
-            return technique["name"]
+            return technique.get(field)
 
     return util_config.NOT_FOUND
 
@@ -468,6 +479,10 @@ def technique_used_helper(technique_list, technique, reference_list, inherited=F
                             subtechnique["descr"] += "\n\n" + technique_data["descr"]
                         elif "descr" in technique_data:
                             subtechnique["descr"] = technique_data["descr"]
+                        if "descr_fa" in technique_data and "descr_fa" in subtechnique:
+                            subtechnique["descr_fa"] += "\n\n" + technique_data["descr_fa"]
+                        elif "descr_fa" in technique_data:
+                            subtechnique["descr_fa"] = technique_data["descr_fa"]
                         break
                 else:  # sub-technique is not in list
                     # Add subtechnique to list
@@ -492,6 +507,10 @@ def technique_used_helper(technique_list, technique, reference_list, inherited=F
                         technique_list[attack_id]["descr"] += "\n\n" + technique_data["descr"]
                     elif "descr" in technique_data:
                         technique_list[attack_id]["descr"] = technique_data["descr"]
+                    if "descr_fa" in technique_data and "descr_fa" in technique_list[attack_id]:
+                        technique_list[attack_id]["descr_fa"] += "\n\n" + technique_data["descr_fa"]
+                    elif "descr_fa" in technique_data:
+                        technique_list[attack_id]["descr_fa"] = technique_data["descr_fa"]
                 else:
                     # Add technique to list
                     if inherited:
@@ -510,6 +529,8 @@ def technique_used_helper(technique_list, technique, reference_list, inherited=F
             if technique["relationship"].get("description"):
                 # Get filtered description
                 technique_list[attack_id]["descr"] = technique["relationship"]["description"]
+                if technique["relationship"].get("description_fa"):
+                    technique_list[attack_id]["descr_fa"] = technique["relationship"]["description_fa"]
                 reference_list = update_reference_list(reference_list, technique["relationship"])
 
     return technique_list
@@ -531,11 +552,14 @@ def get_technique_data_helper(attack_id, technique, reference_list):
         technique_data["id"] = attack_id
 
     technique_data["name"] = technique["object"]["name"]
+    technique_data["name_fa"] = technique["object"].get("name_fa")
 
     # Check if it has external references
     if technique["relationship"].get("description"):
         # Get filtered description
         technique_data["descr"] = technique["relationship"]["description"]
+        if technique["relationship"].get("description_fa"):
+            technique_data["descr_fa"] = technique["relationship"]["description_fa"]
         reference_list = update_reference_list(reference_list, technique["relationship"])
 
     technique_data["subtechniques"] = []
@@ -552,6 +576,7 @@ def parent_technique_used_helper(parent_id):
     parent_data["domain"] = technique_to_domain[parent_id].split("-")[0]
     parent_data["id"] = parent_id
     parent_data["name"] = get_technique_name(parent_id)
+    parent_data["name_fa"] = get_technique_name(parent_id, "name_fa")
     parent_data["technique_used"] = False
     parent_data["subtechniques"] = []
 
@@ -577,6 +602,32 @@ colorMap = {
     3: "#ff66f4",  # techniques used by the object AND used by inherited campaign relationships (1 & 2)
 }
 domain_name_map = {"enterprise-attack": "Enterprise", "mobile-attack": "Mobile", "ics-attack": "ICS"}
+static_fa_labels = {
+    "Analytics": "تحلیل‌ها",
+    "Assets": "دارایی‌ها",
+    "Campaigns": "کارزارها",
+    "Data Components": "مولفه‌های داده",
+    "Data Sources": "منابع داده",
+    "Detection Strategies": "راهبردهای تشخیص",
+    "Enterprise": "سازمانی",
+    "Groups": "گروه‌ها",
+    "ICS": "سامانه‌های کنترل صنعتی",
+    "Matrices": "ماتریس‌ها",
+    "Mitigations": "راهکارهای کاهش خطر",
+    "Mobile": "موبایل",
+    "Software": "نرم‌افزار",
+    "Tactics": "تاکتیک‌ها",
+    "Techniques": "تکنیک‌ها",
+    "analytics": "تحلیل‌ها",
+    "data components": "مولفه‌های داده",
+    "detection strategies": "راهبردهای تشخیص",
+    "matrices": "ماتریس‌ها",
+}
+
+
+def get_static_fa_label(label):
+    """Return Persian UI text for generated non-STIX sidebar labels."""
+    return static_fa_labels.get(label)
 
 
 def get_navigator_layers(name, attack_id, obj_type, rel_type, version, techniques_used, inheritance=False):
@@ -802,6 +853,7 @@ def get_side_menu_matrices(children):
         if matrix["type"] == "local":
             return {
                 "name": matrix["name"],
+                "name_fa": matrix.get("name_fa"),
                 "id": matrix["name"].split("-")[0].split(" ")[0].lower(),
                 "path": path_prefix + matrix["path"] + "/",  # parents don't have links
                 "children": list(map(lambda child: children_helper(child, path_prefix), children)),
@@ -809,6 +861,7 @@ def get_side_menu_matrices(children):
         elif matrix["type"] == "external":
             return {
                 "name": matrix["name"],
+                "name_fa": matrix.get("name_fa"),
                 "external": True,
                 "id": matrix["name"].split("-")[0].split(" ")[0].lower(),
                 "path": matrix["path"],  # external links don't get prefixes
@@ -817,6 +870,7 @@ def get_side_menu_matrices(children):
 
     return {
         "name": "matrices",
+        "name_fa": "ماتریس‌ها",
         "path": None,  # root level doesn't get a path
         "children": list(map(lambda child: children_helper(child, "/matrices/"), children)),
     }
@@ -829,6 +883,7 @@ def get_subtype_data(matrix, inside, name):
 
     subinside = {}
     subinside["name"] = matrix["name"]
+    subinside["name_fa"] = matrix.get("name_fa")
     subinside["path"] = matrix["path"]
 
     for subtype in matrix["subtypes"]:

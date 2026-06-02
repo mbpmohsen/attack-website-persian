@@ -90,6 +90,7 @@ def generate_group_md(group, side_menu_data, notes):
 
         if group.get("name"):
             data["name"] = group["name"]
+            data["name_fa"] = group.get("name_fa")
 
         if group.get("x_mitre_version"):
             data["version"] = group["x_mitre_version"]
@@ -105,6 +106,7 @@ def generate_group_md(group, side_menu_data, notes):
 
         if group.get("description"):
             data["descr"] = group["description"]
+            data["descr_fa"] = group.get("description_fa")
 
         if group.get("x_mitre_deprecated"):
             data["deprecated"] = True
@@ -194,9 +196,11 @@ def get_groups_table_data(group_list):
 
             if group.get("name"):
                 row["name"] = group["name"]
+                row["name_fa"] = group.get("name_fa")
 
             if group.get("description"):
                 row["descr"] = group["description"]
+                row["descr_fa"] = group.get("description_fa")
 
                 if group.get("x_mitre_deprecated"):
                     row["deprecated"] = True
@@ -276,6 +280,7 @@ def get_campaign_table_data(group, reference_list):
                 campaign_list[campaign_id] = {
                     "id": attack_id,
                     "name": campaign["object"]["name"],
+                    "name_fa": campaign["object"].get("name_fa"),
                     "first_seen": campaign_dates["first_seen"] if campaign_dates.get("first_seen") else "",
                     "last_seen": campaign_dates["last_seen"] if campaign_dates.get("last_seen") else "",
                     "first_seen_citation": date_citations["first_seen_citation"]
@@ -295,6 +300,8 @@ def get_campaign_table_data(group, reference_list):
                         reference = True
 
                     campaign_list[campaign_id]["desc"] = campaign["relationship"]["description"]
+                    if campaign["relationship"].get("description_fa"):
+                        campaign_list[campaign_id]["desc_fa"] = campaign["relationship"]["description_fa"]
 
                     # update reference list
                     reference_list = util.buildhelpers.update_reference_list(reference_list, campaign["relationship"])
@@ -312,10 +319,15 @@ def get_campaign_table_data(group, reference_list):
                                 tech_data["parent_id"] = util.buildhelpers.get_parent_technique_id(t_id)
                                 tech_data["id"] = util.buildhelpers.get_sub_technique_id(t_id)
                                 tech_data["name"] = util.buildhelpers.get_technique_name(tech_data["parent_id"])
+                                tech_data["name_fa"] = util.buildhelpers.get_technique_name(
+                                    tech_data["parent_id"], "name_fa"
+                                )
                                 tech_data["sub_name"] = technique["object"]["name"]
+                                tech_data["sub_name_fa"] = technique["object"].get("name_fa")
                             else:
                                 tech_data["id"] = t_id
                                 tech_data["name"] = technique["object"]["name"]
+                                tech_data["name_fa"] = technique["object"].get("name_fa")
 
                             campaign_list[campaign_id]["techniques"].append(tech_data)
 
@@ -427,12 +439,18 @@ def update_software_list(pairings: list, software_list: list, reference_list: li
                 software_attack_id = util.buildhelpers.get_attack_id(object=software["object"])
                 # check if software not in software_list dict
                 if software_stix_id not in software_list and software_attack_id:
-                    software_list[software_stix_id] = {"id": software_attack_id, "name": software["object"]["name"]}
+                    software_list[software_stix_id] = {
+                        "id": software_attack_id,
+                        "name": software["object"]["name"],
+                        "name_fa": software["object"].get("name_fa"),
+                    }
 
                     if software["relationship"].get("description"):
                         reference = True
                         # Get filtered description
                         software_list[software_stix_id]["descr"] = software["relationship"]["description"]
+                        if software["relationship"].get("description_fa"):
+                            software_list[software_stix_id]["descr_fa"] = software["relationship"]["description_fa"]
                         # Update reference list
                         reference_list = util.buildhelpers.update_reference_list(
                             reference_list=reference_list, obj=software["relationship"]
@@ -451,10 +469,15 @@ def update_software_list(pairings: list, software_list: list, reference_list: li
                                     tech_data["parent_id"] = util.buildhelpers.get_parent_technique_id(sub_tid=t_id)
                                     tech_data["id"] = util.buildhelpers.get_sub_technique_id(sub_tid=t_id)
                                     tech_data["name"] = util.buildhelpers.get_technique_name(tid=tech_data["parent_id"])
+                                    tech_data["name_fa"] = util.buildhelpers.get_technique_name(
+                                        tech_data["parent_id"], "name_fa"
+                                    )
                                     tech_data["sub_name"] = technique["object"]["name"]
+                                    tech_data["sub_name_fa"] = technique["object"].get("name_fa")
                                 else:
                                     tech_data["id"] = t_id
                                     tech_data["name"] = technique["object"]["name"]
+                                    tech_data["name_fa"] = technique["object"].get("name_fa")
 
                                 software_list[software_stix_id]["techniques"].append(tech_data)
     return software_list, reference

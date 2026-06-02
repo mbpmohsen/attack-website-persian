@@ -1,12 +1,13 @@
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% macro table_with_subtechniques(technique_table) -%}
     <table class="table-techniques">
         <thead>
             <tr>
                 <td colspan="2">ID</td>
-                <td>Name</td>
-                <td>Description</td>
+                <td>{{ localized.text("Name", "نام") }}</td>
+                <td>{{ localized.text("Description", "توضیح") }}</td>
             </tr>
         </thead>
         <tbody>
@@ -16,13 +17,13 @@
                         <a href="/techniques/{{row.tid}}"> {{row.tid}} </a>
                     </td>
                     <td>
-                        <a href="/techniques/{{row.tid}}"> {{row.technique_name}} </a>
+                        <a href="/techniques/{{row.tid}}"> {{ localized.text(row.technique_name, row.technique_name_fa) }} </a>
                     </td>
                     <td>
                         {% if row.deprecated %}
                             <font color="red">****Deprecation Warning****</font>
                         {% endif %}
-                        {{clean_output.stixToHTML(row.descr, firstParagraphOnly=True)}}
+                        {{ localized.stix(row.descr, row.descr_fa, firstParagraphOnly=True) }}
                     </td>
                 </tr>
                 {% for subtechnique in row.subtechniques %}
@@ -32,10 +33,10 @@
                             <a href="/techniques/{{row.tid}}/{{subtechnique.id}}"> .{{subtechnique.id}} </a>
                         </td>
                         <td>
-                            <a href="/techniques/{{row.tid}}/{{subtechnique.id}}"> {{subtechnique.name}} </a>
+                            <a href="/techniques/{{row.tid}}/{{subtechnique.id}}"> {{ localized.text(subtechnique.name, subtechnique.name_fa) }} </a>
                         </td>
                         <td>
-                            {{clean_output.stixToHTML(subtechnique.descr, firstParagraphOnly=True)}}
+                            {{ localized.stix(subtechnique.descr, subtechnique.descr_fa, firstParagraphOnly=True) }}
                         </td>
                     </tr>   
                 {% endfor %}

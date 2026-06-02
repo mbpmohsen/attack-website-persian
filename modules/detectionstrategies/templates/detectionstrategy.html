@@ -6,6 +6,7 @@
 {% import 'macros/versioning.html' as versioning %}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% set parsed = page.data | from_json %}
 {% set title = parsed.name + ", Detection Strategy " + parsed.attack_id + " | MITRE ATT&CK&reg;" -%}
@@ -30,7 +31,7 @@
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="/">Home</a></li>
   <li class="breadcrumb-item"><a href="/detectionstrategies/">Detection Strategies</a></li>
-  <li class="breadcrumb-item">{{ parsed.name }}</li>
+  <li class="breadcrumb-item">{{ localized.text(parsed.name, parsed.name_fa) }}</li>
 </ol>
 
 <div class="tab-pane fade show active" id="v-{{pages.title}}" role="tabpanel" aria-labelledby="v-{{pages.title}}-tab">
@@ -41,7 +42,7 @@
     <div class="jumbotron jumbotron-fluid">
       <div class="container-fluid">
         <h1>
-          {{ parsed.name }}
+          {{ localized.text(parsed.name, parsed.name_fa) }}
         </h1>
 
         {% if parsed.deprecated %}
@@ -53,12 +54,12 @@
             <h4>
               Technique Detected:&nbsp;
               <a href="{{parsed.technique_detected.url}}">
-                {{parsed.technique_detected.name}} | {{parsed.technique_detected.attack_id}}
+                {{ localized.text(parsed.technique_detected.name, parsed.technique_detected.name_fa) }} | {{parsed.technique_detected.attack_id}}
               </a>
             </h4>
             {% if parsed.technique_detected.detects %}
             <div class="description-body">
-              {{clean_output.stixToHTML(parsed.technique_detected.detects, parsed.citations)}}
+              {{ localized.stix(parsed.technique_detected.detects, parsed.technique_detected.detects_fa, parsed.citations) }}
             </div>
             {% endif %}
             {% endif %}
@@ -144,7 +145,7 @@
               {% for analytic in parsed.analytics[platform] %}
               <h4 class="pt-3" id="{{analytic.id}}">{{ analytic.id }}</h4>
               <div>
-                {{clean_output.stixToHTML(analytic.description, parsed.citations)}}
+                {{ localized.stix(analytic.description, analytic.description_fa, parsed.citations) }}
               </div>
 
               {% if analytic.log_source_table %}
@@ -167,7 +168,7 @@
                       {% if loop.first %}
                       <td rowspan="{{ log_sources|length }}">
                         <a href="{{ datacomponent.url }}">
-                          {{ datacomponent.name }} ({{ datacomponent_id }})
+                          {{ localized.text(datacomponent.name, datacomponent.name_fa) }} ({{ datacomponent_id }})
                         </a>
                       </td>
                       {% endif %}
@@ -195,7 +196,7 @@
                     {% for elem in analytic.mutable_elements %}
                     <tr>
                       <td>{{ elem.field }}</td>
-                      <td>{{ elem.description }}</td>
+                      <td>{{ localized.text(elem.description, elem.description_fa) }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>

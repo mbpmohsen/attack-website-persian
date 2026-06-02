@@ -1,0 +1,18 @@
+{% import 'macros/clean_output.html' as clean_output %}
+
+{% macro text(en_text, fa_text=None) -%}
+{% if fa_text %}
+<span class="language-content-en has-language-alternative">{{ en_text }}</span><span class="language-content-fa" lang="fa" dir="rtl">{{ fa_text }}</span>
+{% else %}
+{{ en_text }}
+{% endif %}
+{%- endmacro %}
+
+{% macro stix(en_text, fa_text=None, citations=None, firstParagraphOnly=False, convert=True) -%}
+{% if fa_text %}
+<div class="language-content-en has-language-alternative">{{ clean_output.stixToHTML(en_text, citations, firstParagraphOnly, convert) }}</div>
+<div class="language-content-fa" lang="fa" dir="rtl">{{ clean_output.stixToHTML(fa_text, citations, firstParagraphOnly, convert) }}</div>
+{% else %}
+{{ clean_output.stixToHTML(en_text, citations, firstParagraphOnly, convert) }}
+{% endif %}
+{%- endmacro %}

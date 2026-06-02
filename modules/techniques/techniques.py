@@ -358,10 +358,13 @@ def get_mitigations_table_data(technique, reference_list):
                 row = {}
                 row["mid"] = attack_id
                 row["name"] = mitigation["object"]["name"]
+                row["name_fa"] = mitigation["object"].get("name_fa")
                 if mitigation["relationship"].get("description"):
                     # Get filtered description
                     reference_list = util.buildhelpers.update_reference_list(reference_list, mitigation["relationship"])
                     row["descr"] = mitigation["relationship"]["description"]
+                    if mitigation["relationship"].get("description_fa"):
+                        row["descr_fa"] = mitigation["relationship"]["description_fa"]
 
                 mitigation_data.append(row)
 
@@ -394,10 +397,13 @@ def get_assets_table_data(technique, reference_list):
                 row = {}
                 row["id"] = attack_id
                 row["name"] = asset["object"]["name"]
+                row["name_fa"] = asset["object"].get("name_fa")
                 if asset["relationship"].get("description"):
                     # Get filtered description
                     reference_list = util.buildhelpers.update_reference_list(reference_list, asset["relationship"])
                     row["descr"] = asset["relationship"]["description"]
+                    if asset["relationship"].get("description_fa"):
+                        row["descr_fa"] = asset["relationship"]["description_fa"]
 
                 asset_data.append(row)
 
@@ -433,7 +439,13 @@ def get_analytic_list(analytics, reference_list):
             continue
 
         reference_list = util.buildhelpers.update_reference_list(reference_list, analytic)
-        analytics_list.append({"id": attack_id, "description": analytic.get("description", "")})
+        analytics_list.append(
+            {
+                "id": attack_id,
+                "description": analytic.get("description", ""),
+                "description_fa": analytic.get("description_fa"),
+            }
+        )
     return analytics_list
 
 
@@ -464,6 +476,7 @@ def get_detection_strategies_table_data(technique, reference_list):
                 row = {}
                 row["id"] = attack_id
                 row["name"] = detection_strategy["object"]["name"]
+                row["name_fa"] = detection_strategy["object"].get("name_fa")
                 row["analytics"] = get_analytic_list(analytics=analytics, reference_list=reference_list)
                 detection_strategy_data.append(row)
                 reference_list = util.buildhelpers.update_reference_list(reference_list, detection_strategy)

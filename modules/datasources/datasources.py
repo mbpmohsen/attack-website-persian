@@ -90,6 +90,7 @@ def generate_datasource_md(datasource, side_menu_data, notes):
 
         if datasource.get("name"):
             data["name"] = datasource["name"]
+            data["name_fa"] = datasource.get("name_fa")
 
         if datasource.get("x_mitre_version"):
             data["version"] = datasource["x_mitre_version"]
@@ -99,6 +100,7 @@ def generate_datasource_md(datasource, side_menu_data, notes):
 
         if datasource.get("description"):
             data["descr"] = datasource["description"]
+            data["descr_fa"] = datasource.get("description_fa")
 
         if datasource.get("x_mitre_platforms"):
             datasource["x_mitre_platforms"].sort()
@@ -137,6 +139,7 @@ def get_datasources_side_nav_data(datasources):
             domain_names = [util.buildhelpers.get_domain_display_name(domain) for domain in domains]
             datasource_data = {
                 "name": datasource["name"],
+                "name_fa": datasource.get("name_fa"),
                 "id": attack_id,
                 "path": "/datasources/{}/".format(attack_id),
                 "domains": domain_names,
@@ -149,6 +152,7 @@ def get_datasources_side_nav_data(datasources):
 
     return {
         "name": "Data Sources",
+        "name_fa": "منابع داده",
         "id": "datasources",
         "path": None,  # root level doesn't get a path
         "children": side_nav_data,
@@ -167,8 +171,10 @@ def get_datasources_table_data(datasource_list):
             row = {
                 "id": attack_id,
                 "name": datasource.get("name"),
+                "name_fa": datasource.get("name_fa"),
                 "domains": domain_names,
                 "descr": datasource.get("description", ""),
+                "descr_fa": datasource.get("description_fa"),
                 "deprecated": datasource.get("x_mitre_deprecated", False),
             }
             datasources_table_data.append(row)

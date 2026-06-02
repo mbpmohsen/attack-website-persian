@@ -4,6 +4,7 @@
 {% set active_page = "software" -%}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% block innerleft %}
 <!--stop-indexing-for-search-->
@@ -25,34 +26,14 @@
       <div class="container-fluid">
         <div class="overflow-x-auto">
           <h1>Software</h1>
-          <p>
-            Software is a generic term for custom or commercial code, operating system utilities, open-source software,
-            or other tools used to conduct behavior modeled in ATT&CK.
-            Some instances of software have multiple names associated with the same instance due to various
-            organizations
-            tracking the same set of software by different names.
-            The team makes a best effort to track overlaps between names based on publicly reported associations, which
-            are designated as
-            “Associated Software” on each page (formerly labeled “Aliases”), because we believe these overlaps are
-            useful for analyst awareness.
-          </p>
-          <p>
-            Software entries include publicly reported technique use or capability to use a technique and may be mapped
-            to Groups who have been reported to use that Software.
-            The information provided does not represent all possible technique use by a piece of Software, but rather
-            a subset that is available solely through open source reporting.
-          </p>
+          <p>{{ localized.text("Software is a generic term for custom or commercial code, operating system utilities, open-source software, or other tools used to conduct behavior modeled in ATT&CK. Some instances of software have multiple names associated with the same instance due to various organizations tracking the same set of software by different names. The team makes a best effort to track overlaps between names based on publicly reported associations, which are designated as “Associated Software” on each page (formerly labeled “Aliases”), because we believe these overlaps are useful for analyst awareness.", "نرم‌افزار اصطلاحی عمومی برای کد سفارشی یا تجاری، ابزارهای سیستم‌عامل، نرم‌افزار متن‌باز یا ابزارهای دیگری است که برای انجام رفتارهای مدل‌شده در ATT&CK استفاده می‌شوند. بعضی نمونه‌های نرم‌افزار به دلیل ردیابی یک مجموعه نرم‌افزاری توسط سازمان‌های مختلف، چند نام مرتبط دارند. تیم ATT&CK تا حد امکان هم‌پوشانی نام‌ها را بر اساس گزارش‌های عمومی ردیابی می‌کند و آن‌ها را در هر صفحه به عنوان «نرم‌افزارهای مرتبط» نشان می‌دهد، زیرا این هم‌پوشانی‌ها برای آگاهی تحلیلگران مفید هستند.") }}</p>
+          <p>{{ localized.text("Software entries include publicly reported technique use or capability to use a technique and may be mapped to Groups who have been reported to use that Software. The information provided does not represent all possible technique use by a piece of Software, but rather a subset that is available solely through open source reporting.", "ورودی‌های نرم‌افزار شامل استفاده گزارش‌شده از تکنیک‌ها یا توانایی استفاده از یک تکنیک هستند و ممکن است به گروه‌هایی که طبق گزارش‌ها از آن نرم‌افزار استفاده کرده‌اند نگاشت شوند. اطلاعات ارائه‌شده همه کاربردهای ممکن یک نرم‌افزار را نشان نمی‌دهد، بلکه زیرمجموعه‌ای است که از گزارش‌های متن‌باز در دسترس است.") }}</p>
           <ul>
-            <li class="mb-4">Tool - Commercial, open-source, built-in, or publicly available software that could be used
-              by a defender, pen tester, red teamer, or an adversary. This category includes both software that
-              generally is not found on an enterprise system as well as software generally available as part of an
-              operating system that is already present in an environment. Examples include PsExec, Metasploit, Mimikatz,
-              as well as Windows utilities such as Net, netstat, Tasklist, etc.</li>
-            <li class="mb-4">Malware - Commercial, custom closed source, or open source software intended to be used for
-              malicious purposes by adversaries. Examples include PlugX, CHOPSTICK, etc.</li>
+            <li class="mb-4">{{ localized.text("Tool - Commercial, open-source, built-in, or publicly available software that could be used by a defender, pen tester, red teamer, or an adversary. This category includes both software that generally is not found on an enterprise system as well as software generally available as part of an operating system that is already present in an environment. Examples include PsExec, Metasploit, Mimikatz, as well as Windows utilities such as Net, netstat, Tasklist, etc.", "ابزار - نرم‌افزار تجاری، متن‌باز، داخلی یا عمومی که می‌تواند توسط مدافع، آزمونگر نفوذ، تیم قرمز یا مهاجم استفاده شود. این دسته هم نرم‌افزارهایی را شامل می‌شود که معمولا روی سامانه سازمانی وجود ندارند و هم ابزارهایی را که معمولا به عنوان بخشی از سیستم‌عامل در محیط حاضرند. نمونه‌ها شامل PsExec، Metasploit، Mimikatz و ابزارهای ویندوز مانند Net، netstat و Tasklist هستند.") }}</li>
+            <li class="mb-4">{{ localized.text("Malware - Commercial, custom closed source, or open source software intended to be used for malicious purposes by adversaries. Examples include PlugX, CHOPSTICK, etc.", "بدافزار - نرم‌افزار تجاری، سفارشی با منبع بسته یا متن‌باز که برای استفاده مخرب توسط مهاجمان طراحی شده است. نمونه‌ها شامل PlugX و CHOPSTICK هستند.") }}</li>
           </ul>
 
-          <h6 class="table-object-count">Software: {{ parsed.software_list_len }}</h6>
+          <h6 class="table-object-count">{{ localized.text("Software:", "نرم‌افزار:") }} {{ parsed.software_list_len }}</h6>
           <div class="tables-mobile">
             <table class="table table-bordered table-alternate mt-2">
               <thead>
@@ -70,7 +51,7 @@
                     <a href="/software/{{row.id|upper}}"> {{row.id|upper}} </a>
                   </td>
                   <td>
-                    <a href="/software/{{row.id|upper}}"> {{row.name}} </a>
+                    <a href="/software/{{row.id|upper}}"> {{ localized.text(row.name, row.name_fa) }} </a>
                   </td>
                   <td>
                     {{row.aliases_list|join(", ")}}
@@ -79,7 +60,7 @@
                     {% if row.deprecated %}
                     <font color="red">****Deprecation Warning****</font>
                     {% endif %}
-                    {{clean_output.stixToHTML(row.descr)}}
+                    {{ localized.stix(row.descr, row.descr_fa) }}
                   </td>
                 </tr>
                 {% endfor %}

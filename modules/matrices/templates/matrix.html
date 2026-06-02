@@ -6,6 +6,7 @@
 {% import 'macros/deprecated.html' as deprecated %}
 {% import 'macros/clean_output.html' as clean_output %}
 {% import 'macros/notes.html' as notes %}
+{% import 'macros/localized.html' as localized %}
 
 {% if parsed.domain == "mobile" %}
 {% if parsed.name == "Mobile" %}
@@ -57,7 +58,7 @@
       {% else %}
       <li class="breadcrumb-item"><a href="/matrices/">Matrices</a></li>
       {% endif %}
-      <li class="breadcrumb-item">{{ parsed.name }}</li>
+      <li class="breadcrumb-item">{{ localized.text(parsed.name, parsed.name_fa) }}</li>
     </ol>
   </div>
 </div>
@@ -67,7 +68,7 @@
     {% if parsed.deprecated %}
     <div class="row">
       <div class="col">
-        <h1>{{parsed.name}}</h1>
+        <h1>{{ localized.text(parsed.name, parsed.name_fa) }}</h1>
         {% if parsed.descr %}
         {{deprecated.deprecated(clean_output.stixToHTML(parsed.descr, firstParagraphOnly=True))}}
         {% else %}
@@ -79,10 +80,10 @@
     {% set matrix_plural = "Matrices" if (parsed.matrices | length > 1) else "Matrix" %}
     <div class="row">
       <div class="col-md-9">
-        <h1>{{parsed.name}} {{matrix_plural}}</h1>
+        <h1>{{ localized.text(parsed.name, parsed.name_fa) }} {{ localized.text(matrix_plural, "ماتریس‌ها" if matrix_plural == "Matrices" else "ماتریس") }}</h1>
 
         <p>
-          {{parsed.descr}}
+          {{ localized.text(parsed.descr, parsed.descr_fa) }}
           {% if parsed.platforms | length > 1 %}
           The {{matrix_plural}} contains information for the following platforms: {% for platform in parsed.platforms
           %}{%if loop.index != 1 %}, {% endif %}<a href="/matrices/{{platform.path}}">{{platform.name}}</a>{% endfor %}.

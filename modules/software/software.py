@@ -86,6 +86,7 @@ def generate_software_md(software, side_menu_data, notes):
         # Get name
         if software.get("name"):
             data["name"] = software["name"]
+            data["name_fa"] = software.get("name_fa")
 
         # Get type
         if software.get("type"):
@@ -106,6 +107,7 @@ def generate_software_md(software, side_menu_data, notes):
         # Get description
         if software.get("description"):
             data["descr"] = software["description"]
+            data["descr_fa"] = software.get("description_fa")
 
             if software.get("x_mitre_deprecated"):
                 data["deprecated"] = True
@@ -191,9 +193,11 @@ def get_software_table_data(software_list):
             row = {}
 
             row["name"] = software["name"]
+            row["name_fa"] = software.get("name_fa")
 
             if software.get("description"):
                 row["descr"] = software["description"]
+                row["descr_fa"] = software.get("description_fa")
                 if software.get("x_mitre_deprecated"):
                     row["deprecated"] = True
 
@@ -241,11 +245,13 @@ def get_groups_using_software(software, reference_list):
                     )
                     continue
 
-                row = {"id": attack_id, "name": group["object"]["name"]}
+                row = {"id": attack_id, "name": group["object"]["name"], "name_fa": group["object"].get("name_fa")}
 
                 if group["relationship"].get("description"):
                     # Get filtered description
                     row["descr"] = group["relationship"]["description"]
+                    if group["relationship"].get("description_fa"):
+                        row["descr_fa"] = group["relationship"]["description_fa"]
                     reference_list = util.buildhelpers.update_reference_list(reference_list, group["relationship"])
 
                 seen_attack_ids[attack_id] = True
@@ -262,8 +268,10 @@ def get_groups_using_software(software, reference_list):
                     attack_id = util.buildhelpers.get_attack_id(group["object"])
 
                     descr = None
+                    descr_fa = None
                     if group["relationship"].get("description"):
                         descr = group["relationship"]["description"]
+                        descr_fa = group["relationship"].get("description_fa")
                         reference_list = util.buildhelpers.update_reference_list(reference_list, group["relationship"])
 
                     if attack_id in seen_attack_ids:
@@ -275,11 +283,21 @@ def get_groups_using_software(software, reference_list):
                             r["descr"] = util.buildhelpers.get_reference_set([r["descr"], descr])
                         elif descr:
                             r["descr"] = descr
+                        if r.get("descr_fa") and descr_fa:
+                            r["descr_fa"] = util.buildhelpers.get_reference_set([r["descr_fa"], descr_fa])
+                        elif descr_fa:
+                            r["descr_fa"] = descr_fa
                     else:  # new group seen, add row
-                        row = {"id": attack_id, "name": group["object"]["name"]}
+                        row = {
+                            "id": attack_id,
+                            "name": group["object"]["name"],
+                            "name_fa": group["object"].get("name_fa"),
+                        }
 
                         if descr:
                             row["descr"] = descr
+                        if descr_fa:
+                            row["descr_fa"] = descr_fa
 
                         seen_attack_ids[attack_id] = True
                         groups.append(row)
@@ -332,10 +350,16 @@ def get_campaign_table_data(software, reference_list):
             campaign_id = campaign["object"]["id"]
             if campaign_id not in campaign_list:
                 attack_id = util.buildhelpers.get_attack_id(campaign["object"])
-                campaign_list[campaign_id] = {"id": attack_id, "name": campaign["object"]["name"]}
+                campaign_list[campaign_id] = {
+                    "id": attack_id,
+                    "name": campaign["object"]["name"],
+                    "name_fa": campaign["object"].get("name_fa"),
+                }
 
                 if campaign["relationship"].get("description"):
                     campaign_list[campaign_id]["desc"] = campaign["relationship"]["description"]
+                    if campaign["relationship"].get("description_fa"):
+                        campaign_list[campaign_id]["desc_fa"] = campaign["relationship"]["description_fa"]
 
                     # update reference list
                     reference_list = util.buildhelpers.update_reference_list(reference_list, campaign["relationship"])

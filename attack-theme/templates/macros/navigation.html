@@ -18,9 +18,11 @@ Notes:
     and the immediate children are not grouped under an expansion panel,
     unlike grand+ children.
 -->
+{% import 'macros/localized.html' as localized %}
+
 {% macro sidenav(root, output_file, filter=False) %}
 <div class="sidenav-wrapper">
-  <div class="heading" data-toggle="collapse" data-target="#sidebar-collapse" id="v-home-tab" aria-expanded="true" aria-controls="#sidebar-collapse" aria-selected="false">{{root.name | upper}}
+  <div class="heading" data-toggle="collapse" data-target="#sidebar-collapse" id="v-home-tab" aria-expanded="true" aria-controls="#sidebar-collapse" aria-selected="false">{{ localized.text(root.name | upper, root.name_fa) }}
     <i class="fa-solid fa-fw fa-chevron-down"></i>
     <i class="fa-solid fa-fw fa-chevron-up"></i>
   </div>
@@ -44,7 +46,7 @@ Notes:
   <div class="sidenav-list collapse show" id="sidebar-collapse" aria-labelledby="v-home-tab">
     {# "overview" link as first item in list if root.path exists #}
     {% if root.path %}
-{{ sidenav_helper("0", {"name": "Overview", "id": "0", "path": root.path, "children": []}, output_file) }}
+{{ sidenav_helper("0", {"name": "Overview", "name_fa": "نمای کلی", "id": "0", "path": root.path, "children": []}, output_file) }}
     {% endif %}
     {% for child in root.children %}
 {{ sidenav_helper(child.id, child, output_file) }}
@@ -60,26 +62,26 @@ Notes:
   {% if root.path %}
     <div class="sidenav-head {% if output_file | clean_path == root.path %} active{% endif %} {% for domain in root.domains %}{{ domain }} {% endfor %}" id="{{ root_id }}-{{ root.id }}">
       <a href="{{ root.path | escape_spaces }}"{% if "external" in root and root.external %} target="_blank"{% endif %}>
-        {{ root.name }}
+        {{ localized.text(root.name, root.name_fa) }}
         {% if "external" in root and root.external %}
           <img src="/theme/images/external-site-dark.jpeg" width="15">
         {% endif %}
       </a>
     </div>
   {% else %}
-    <span>{{ root.name }}</span>
+    <span>{{ localized.text(root.name, root.name_fa) }}</span>
   {% endif %}
 {% else %}
   <div class="sidenav-head {% if output_file | clean_path == root.path %} active{% endif %} {% for domain in root.domains %}{{ domain }} {% endfor %}" id="{% if root.id != root_id %}{{ root_id }}-{% endif %}{{ root.id }}">
     {% if root.path %}
       <a href="{{ root.path | escape_spaces }}"{% if "external" in root and root.external %} target="_blank"{% endif %}>
-        {{ root.name }}
+        {{ localized.text(root.name, root.name_fa) }}
         {% if "external" in root and root.external %}
           <img src="/theme/images/external-site-dark.jpeg" width="15">
         {% endif %}
       </a>
     {% else %}
-      <span>{{ root.name }}</span>
+      <span>{{ localized.text(root.name, root.name_fa) }}</span>
     {% endif %}
     <div class="expand-button collapsed" id="{% if root.id != root_id %}{{ root_id }}-{% endif %}{{ root.id }}-header" data-toggle="collapse" data-target="#{% if root.id != root_id %}{{ root_id }}-{% endif %}{{ root.id }}-body" aria-expanded="false" aria-controls="#{% if root.id != root_id %}{{ root_id }}-{% endif %}{{ root.id }}-body"></div>
   </div>

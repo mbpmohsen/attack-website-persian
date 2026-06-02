@@ -51,6 +51,7 @@ def generate_platform_matrices(matrix, notes, side_menu_data=None):
     data["menu"] = side_menu_data
     data["domain"] = matrix["matrix"].split("-")[0]
     data["name"] = matrix["name"]
+    data["name_fa"] = matrix.get("name_fa")
 
     data["matrices"], data["has_subtechniques"], data["tour_technique"] = get_sub_matrices(matrix)
     if data["matrices"]:
@@ -66,6 +67,7 @@ def generate_platform_matrices(matrix, notes, side_menu_data=None):
     data["navigator_link"] = site_config.navigator_link
 
     data["descr"] = matrix["descr"]
+    data["descr_fa"] = matrix.get("descr_fa")
     data["path"] = matrix["path"]
     data["slug"] = metadata_slug("matrix", data["path"])
 
@@ -94,6 +96,7 @@ def generate_deprecated_matrix(matrix, side_menu_data=None):
     data = {}
     data["menu"] = side_menu_data
     data["name"] = matrix["name"]
+    data["name_fa"] = matrix.get("name_fa")
     data["domain"] = matrix["matrix"].split("-")[0]
     data["path"] = matrix["path"]
     data["slug"] = metadata_slug("matrix", data["path"])
@@ -178,6 +181,7 @@ def get_sub_matrices(matrix):
         if attack_id:
             obj["id"] = technique["id"]
             obj["name"] = technique["name"]
+            obj["name_fa"] = technique.get("name_fa")
             obj["external_id"] = attack_id
 
             obj["url"] = "/techniques/" + attack_id.replace(".", "/")  # sub-technique URL replacement
@@ -243,6 +247,7 @@ def get_sub_matrices(matrix):
         if attack_id:
             obj["id"] = tactic_id
             obj["name"] = tactic_obj["name"]
+            obj["name_fa"] = tactic_obj.get("name_fa")
             obj["external_id"] = attack_id
 
             obj["url"] = "/tactics/" + attack_id
@@ -263,6 +268,7 @@ def get_sub_matrices(matrix):
         data.append(
             {
                 "name": sub_matrix["name"],
+                "name_fa": sub_matrix.get("name_fa"),
                 "id": sub_matrix["id"],
                 "timestamp": matrix_timestamp,
                 "description": sub_matrix["description"],

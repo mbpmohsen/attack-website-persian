@@ -5,6 +5,7 @@
 {% import 'macros/clean_output.html' as clean_output %}
 {% import 'macros/citations.html' as citations %}
 {% import 'macros/detection_strategies_table_techniques.html' as detection_strategies_table_techniques %}
+{% import 'macros/localized.html' as localized %}
 
 {% import 'macros/notes.html' as notes %}
 {% if parsed.parent_name %}
@@ -421,7 +422,7 @@
                 <a href="/assets/{{asset.id}}"> {{asset.id}} </a>
               </td>
               <td>
-                <a href="/assets/{{asset.id}}"> {{asset.name}} </a>
+                <a href="/assets/{{asset.id}}"> {{ localized_text(asset.name, asset.name_fa) }} </a>
               </td>
             </tr>
             {% endfor %}
@@ -447,11 +448,11 @@
                   <a href="/mitigations/{{mit.mid}}"> {{mit.mid}} </a>
                 </td>
                 <td>
-                  <a href="/mitigations/{{mit.mid}}"> {{mit.name}} </a>
+                  <a href="/mitigations/{{mit.mid}}"> {{ localized_text(mit.name, mit.name_fa) }} </a>
                 </td>
                 <td>
                   {% if mit.descr %}
-                  {{clean_output.stixToHTML(mit.descr, parsed.citations)}}
+                  {{ localized.stix(mit.descr, mit.descr_fa, parsed.citations) }}
                   {% endif %}
                 </td>
               </tr>

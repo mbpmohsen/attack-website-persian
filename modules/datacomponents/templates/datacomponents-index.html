@@ -4,6 +4,7 @@
 {% set active_page = "datacomponents" -%}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% block innerleft %}
 <!--stop-indexing-for-search-->
@@ -25,11 +26,8 @@
       <div class="container-fluid">
         <div class="overflow-x-auto">
           <h1>Data Components</h1>
-          <p>
-            Data Components identify the specific properties/values relevant to detecting a given ATT&CK technique or
-            sub-technique.
-          </p>
-          <h6 class="table-object-count">Data Components:&nbsp;<span class="total-count">{{ parsed.total_count }}</span>
+          <p>{{ localized.text("Data Components identify the specific properties/values relevant to detecting a given ATT&CK technique or sub-technique.", "مولفه‌های داده، ویژگی‌ها یا مقدارهای مشخص مرتبط با تشخیص یک تکنیک یا زیرتکنیک ATT&CK را مشخص می‌کنند.") }}</p>
+          <h6 class="table-object-count">{{ localized.text("Data Components:", "مولفه‌های داده:") }}&nbsp;<span class="total-count">{{ parsed.total_count }}</span>
           </h6>
           <div class="tables-mobile">
             <table class="table table-bordered table-alternate mt-2" id="domain-sort-table">
@@ -72,7 +70,7 @@
                     {% if row.deprecated %}
                     <span style="color: red">****Deprecation Warning****</span>
                     {% endif %}
-                    <a href="/datacomponents/{{ row.id | upper }}"> {{ row.name }} </a>
+                    <a href="/datacomponents/{{ row.id | upper }}"> {{ localized.text(row.name, row.name_fa) }} </a>
                   </td>
                   <td>
                     {% for domain in row.domains %}
@@ -81,7 +79,7 @@
                     {% endfor %}
                   </td>
                   <td>
-                    {{clean_output.stixToHTML(row.description, firstParagraphOnly=True)}}
+                    {{ localized.stix(row.description, row.description_fa, firstParagraphOnly=True) }}
                   </td>
                 </tr>
                 {% endfor %}

@@ -95,8 +95,10 @@ def get_datacomponent_table(datacomponent_list):
         row = {
             "id": attack_id,
             "name": datacomponent.get("name"),
+            "name_fa": datacomponent.get("name_fa"),
             "domains": domain_names,
             "description": datacomponent.get("description"),
+            "description_fa": datacomponent.get("description_fa"),
             "deprecated": datacomponent.get("x_mitre_deprecated", False),
         }
         datacomponent_table.append(row)
@@ -161,6 +163,7 @@ def generate_datacomponent_md(datacomponent, notes, mappings):
         detection_strategy_dict = {
             "id": detection_strategy['id'],
             "name": detection_strategy['name'],
+            "name_fa": detection_strategy.get("name_fa"),
             "attack_id": detection_strategy['external_references'][0]['external_id'],
             "technique_url": f"/techniques/{attack_id_technique.replace('.', '/')}",
             "technique_attack_id": attack_id_technique,
@@ -174,7 +177,9 @@ def generate_datacomponent_md(datacomponent, notes, mappings):
         "created": dates.get("created"),
         "modified": dates.get("modified"),
         "name": datacomponent.get("name"),
+        "name_fa": datacomponent.get("name_fa"),
         "description": datacomponent.get("description"),
+        "description_fa": datacomponent.get("description_fa"),
         "domains": domain_names,
         "version": datacomponent.get("x_mitre_version"),
         "deprecated": datacomponent.get("x_mitre_deprecated", False),

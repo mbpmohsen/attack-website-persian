@@ -4,6 +4,7 @@
 {% set active_page = "detectionstrategies" -%}
 {% import 'macros/navigation.html' as navigation %}
 {% import 'macros/clean_output.html' as clean_output %}
+{% import 'macros/localized.html' as localized %}
 
 {% block innerleft %}
 <!--stop-indexing-for-search-->
@@ -25,12 +26,8 @@
       <div class="container-fluid">
         <div class="overflow-x-auto">
           <h1>Detection Strategies</h1>
-          <p>
-            Detection strategies define high-level approaches for detecting specific
-            adversary techniques. They serve as containers that organize multiple
-            platform-specific analytics into cohesive detection methodologies.
-          </p>
-          <h6 class="table-object-count">Detection Strategies:&nbsp;<span class="total-count">{{ parsed.total_count
+          <p>{{ localized.text("Detection strategies define high-level approaches for detecting specific adversary techniques. They serve as containers that organize multiple platform-specific analytics into cohesive detection methodologies.", "راهبردهای تشخیص، رویکردهای سطح بالا برای تشخیص تکنیک‌های مشخص مهاجم را تعریف می‌کنند. این راهبردها مانند ظرف‌هایی هستند که چند تحلیل وابسته به سکو را در روش‌های تشخیص منسجم سازمان‌دهی می‌کنند.") }}</p>
+          <h6 class="table-object-count">{{ localized.text("Detection Strategies:", "راهبردهای تشخیص:") }}&nbsp;<span class="total-count">{{ parsed.total_count
               }}</span></h6>
           <div class="tables-mobile">
             <table class="table table-bordered table-alternate mt-2" id="domain-sort-table">
@@ -72,7 +69,7 @@
                     {% if row.deprecated %}
                     <span style="color: red">****Deprecation Warning****</span>
                     {% endif %}
-                    <a href="/detectionstrategies/{{ row.id | upper }}"> {{ row.name }} </a>
+                    <a href="/detectionstrategies/{{ row.id | upper }}"> {{ localized.text(row.name, row.name_fa) }} </a>
                   </td>
                   <td>
                     {% for dom in row.domains %}

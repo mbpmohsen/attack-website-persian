@@ -34,7 +34,9 @@ sidebar_page_data = {
 # config for the matrix shown on the index page
 index_matrix = {
     "name": "ATT&CK Matrix for Enterprise",
+    "name_fa": "ماتریس سازمانی ATT&CK",
     "descr": "",  # if specified, adds a subtitle to the index page matrix
+    "descr_fa": "",
     "matrix": "enterprise-attack",
     "platforms": [
         "Windows",

@@ -11,6 +11,7 @@
 {% import 'macros/clean_output.html' as clean_output %}
 {% import 'macros/citations.html' as citations %}
 {% import 'macros/notes.html' as notes %}
+{% import 'macros/localized.html' as localized %}
 
 {% block head %}
 {{ super () }}
@@ -30,7 +31,7 @@
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a href="/">Home</a></li>
   <li class="breadcrumb-item"><a href="/software/">Software</a></li>
-  <li class="breadcrumb-item">{{parsed.name}}</li>
+  <li class="breadcrumb-item">{{ localized.text(parsed.name, parsed.name_fa) }}</li>
 </ol>
 <div class="tab-pane fade show active" id="v-{{pages.title}}" role="tabpanel" aria-labelledby="v-{{pages.title}}-tab">
 </div>
@@ -39,7 +40,7 @@
     <div class="jumbotron jumbotron-fluid">
       <div class="container-fluid">
         <h1>
-          {{parsed.name}}
+          {{ localized.text(parsed.name, parsed.name_fa) }}
         </h1>
 
         {% if parsed.deprecated %}
@@ -53,7 +54,7 @@
           <div class="col-md-8">
             {% if parsed.descr %}
             <div class="description-body">
-              {{clean_output.stixToHTML(parsed.descr, parsed.citations)}}
+              {{ localized.stix(parsed.descr, parsed.descr_fa, parsed.citations) }}
             </div>
             {% endif %}
             {% if parsed.notes %}
@@ -158,10 +159,10 @@
               {% for alias in parsed.alias_descriptions %}
               <tr>
                 <td>
-                  {{alias.name}}
+                  {{ alias.name }}
                 </td>
                 <td>
-                  {{clean_output.stixToHTML(alias.descr, parsed.citations)}}
+                  {{ localized.stix(alias.descr, alias.descr_fa, parsed.citations) }}
                 </td>
               </tr>
               {% endfor %}
@@ -194,10 +195,10 @@
                   <a href="/groups/{{group.id}}">{{group.id}}</a>
                 </td>
                 <td>
-                  <a href="/groups/{{group.id}}">{{group.name}}</a>
+                  <a href="/groups/{{group.id}}">{{ localized.text(group.name, group.name_fa) }}</a>
                 </td>
                 <td>
-                  {{clean_output.stixToHTML(group.descr, parsed.citations)}}
+                  {{ localized.stix(group.descr, group.descr_fa, parsed.citations) }}
                 </td>
               </tr>
               {% endfor %}
@@ -224,11 +225,11 @@
                   <a href="/campaigns/{{campaign.id}}">{{campaign.id}}</a>
                 </td>
                 <td>
-                  <a href="/campaigns/{{campaign.id}}">{{campaign.name}}</a>
+                  <a href="/campaigns/{{campaign.id}}">{{ localized.text(campaign.name, campaign.name_fa) }}</a>
                 </td>
                 <td>
                   {% if campaign.desc %}
-                  {{clean_output.stixToHTML(campaign.desc, parsed.citations)}}
+                  {{ localized.stix(campaign.desc, campaign.desc_fa, parsed.citations) }}
                   {% endif %}
                 </td>
               </tr>

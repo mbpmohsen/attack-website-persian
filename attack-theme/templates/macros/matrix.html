@@ -7,6 +7,7 @@
         isIndex: boolean, true if this matrix is going on the index page
 -->
 {% import 'macros/notes.html' as notes_macro %}
+{% import 'macros/localized.html' as localized %}
 
 {% macro matrices(matrices, has_subtechniques, tour_technique, isIndex, notes) %}
 <div id="tour-matrix-container">
@@ -71,7 +72,7 @@
 {% macro matrix_box(whichmatrix, matrix, num_matrices, tour_technique, isIndex, notes, loop_index) %}
 <div class="matrix-container p-3">
     {% if num_matrices >1 %}
-        <h3 class="text-center matrix-title">{{matrix.name}}</h3>
+        <h3 class="text-center matrix-title">{{ localized.text(matrix.name, matrix.name_fa) }}</h3>
         {% if notes[loop_index-1] %}
             {{ notes_macro.notes_section(notes[loop_index-1], loop_index) }}
         {% endif %}
@@ -106,13 +107,13 @@
     <thead>
         <tr>
             {% for tactic in tactics %}
-                <td class="tactic name"><a href="{{tactic.url}}" data-toggle="tooltip" data-placement="top" title="{{tactic.external_id}}">{{tactic.name}}</a></td>
+                <td class="tactic name"><a href="{{tactic.url}}" data-toggle="tooltip" data-placement="top" title="{{tactic.external_id}}">{{ localized.text(tactic.name, tactic.name_fa) }}</a></td>
             {% endfor %}
         </tr>
         <tr>
             {% for tactic in tactics %}
                 <td class="tactic count">
-                    {{tactic.techniques | length}}&nbsp;techniques
+                    {{tactic.techniques | length}}&nbsp;<span data-i18n="matrix.techniques_count">techniques</span>
                 </td>
             {% endfor %}
         </tr>
@@ -165,13 +166,13 @@
     <thead>
         <tr>
             {% for tactic in tactics %}
-                <td class="tactic name"><a href="{{tactic.url}}" data-toggle="tooltip" data-placement="top" title="{{tactic.external_id}}">{{tactic.name}}</a></td>
+                <td class="tactic name"><a href="{{tactic.url}}" data-toggle="tooltip" data-placement="top" title="{{tactic.external_id}}">{{ localized.text(tactic.name, tactic.name_fa) }}</a></td>
             {% endfor %}
         </tr>
         <tr>
             {% for tactic in tactics %}
                 <td class="tactic count">
-                    {{tactic.techniques | length}}&nbsp;techniques
+                    {{tactic.techniques | length}}&nbsp;<span data-i18n="matrix.techniques_count">techniques</span>
                 </td>
             {% endfor %}
         </tr>
@@ -237,6 +238,6 @@
 {% macro technique_cell(technique, is_supertechnique, tactic) %}
 
 <div class="technique-cell {% if is_supertechnique %} supertechniquecell{% endif %}{% if technique.color %} colored{% endif %}" {% if technique.color %} style="background: {{technique.color}}"{% endif %} id="technique-cell--{{tactic.id}}--{{technique.id}}">
-    <a href="{{technique.url}}" data-toggle="tooltip" data-placement="top" data-animation="false" data-container="#technique-cell--{{tactic.id}}--{{technique.id}}" title="{{technique.external_id}}">{{technique.name}}{% if technique.subtechniques | length > 0 %}&nbsp;<sub>({{technique.subtechniques | length}})</sub>{% endif %}</a>
+    <a href="{{technique.url}}" data-toggle="tooltip" data-placement="top" data-animation="false" data-container="#technique-cell--{{tactic.id}}--{{technique.id}}" title="{{technique.external_id}}">{{ localized.text(technique.name, technique.name_fa) }}{% if technique.subtechniques | length > 0 %}&nbsp;<sub>({{technique.subtechniques | length}})</sub>{% endif %}</a>
 </div>
 {% endmacro %}
