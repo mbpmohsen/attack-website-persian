@@ -18,7 +18,7 @@
 {% import 'macros/versioning.html' as versioning %}
 {% macro localized_text(en_text, fa_text) -%}
 {% if fa_text %}
-<span class="language-content-en has-language-alternative">{{ en_text }}</span><span class="language-content-fa">{{ fa_text }}</span>
+<span class="language-content-en has-language-alternative">{{ en_text }}</span><span class="language-content-fa" lang="fa" dir="rtl">{{ fa_text }}</span>
 {% else %}
 {{ en_text }}
 {% endif %}
