@@ -13,7 +13,11 @@ python tools/qa_persian_rtl.py --output-dir output --stix-dir output/stix --requ
 python tools/ie8_compat_check.py
 ```
 
-For a stricter Persian content gate, require a minimum translated STIX coverage:
+The default content gate requires 99% `name_fa` coverage and 99.5%
+`description_fa` coverage. These thresholds sit just below the measured current
+coverage (99.67% and 100%, respectively), so they catch regressions while
+allowing the known untranslated names. Override them when auditing another data
+source:
 
 ```sh
 python tools/qa_persian_rtl.py \
@@ -21,8 +25,8 @@ python tools/qa_persian_rtl.py \
   --stix-dir output/stix \
   --require-output \
   --require-stix \
-  --min-name-coverage 95 \
-  --min-description-coverage 90
+  --min-name-coverage 99 \
+  --min-description-coverage 99.5
 ```
 
 ## What The Persian/RTL Gate Checks
@@ -158,6 +162,21 @@ translation dictionary, then rebuild. Do not edit files under `output/` directly
 
 If STIX coverage is low, inspect `output/stix/*.json` and add `name_fa` or
 `description_fa` to the upstream Persian CTI fork, then rebuild this website.
+
+The September 4, 2026 build scanned 6,442 current HTML files and skipped 41,047
+archived files. Its active-STIX coverage was:
+
+| Domain | `name_fa` | `description_fa` |
+| --- | ---: | ---: |
+| Enterprise | 4,351 / 4,368 (99.61%) | 23,359 / 23,359 (100%) |
+| Mobile | 661 / 662 (99.85%) | 2,200 / 2,200 (100%) |
+| ICS | 454 / 454 (100%) | 1,057 / 1,057 (100%) |
+| PRE-ATT&CK (deprecated) | 7 / 7 (100%) | 28 / 28 (100%) |
+| Total | 5,473 / 5,491 (99.67%) | 26,644 / 26,644 (100%) |
+
+The gate reports 29 non-blocking warnings: 28 standalone/upstream changelog or
+test pages lack the Persian root attributes, and 18 active named STIX objects
+still lack `name_fa`.
 
 If the IE8 gate reports an ES5+ helper, replace it with a simple loop or add a
 documented polyfill before using that API. For the language switcher, prefer the

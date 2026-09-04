@@ -103,10 +103,17 @@
                 <div class="card-header collapsed" id="subtechniques-card-header" data-toggle="collapse"
                   data-target="#subtechniques-card-body" aria-expanded="false" aria-controls="subtechniques-card-body">
                   {% if parsed.is_subtechnique %}
-                  <h5 class="mb-0" id="sub-techniques">Other sub-techniques of {{parsed.parent_name}}
-                    ({{parsed.subtechniques|length}})</h5>
+                  <h5 class="mb-0" id="sub-techniques">
+                    {{ localized.text(
+                      "Other sub-techniques of " ~ parsed.parent_name,
+                      "سایر زیرتکنیک‌های " ~ (parsed.parent_name_fa or parsed.parent_name)
+                    ) }}
+                    ({{parsed.subtechniques|length}})
+                  </h5>
                   {% else %}
-                  <h5 class="mb-0" id="sub-techniques">Sub-techniques ({{parsed.subtechniques|length}})</h5>
+                  <h5 class="mb-0" id="sub-techniques">
+                    {{ localized.text("Sub-techniques", "زیرتکنیک‌ها") }} ({{parsed.subtechniques|length}})
+                  </h5>
                   {% endif %}
                 </div>
                 <div id="subtechniques-card-body" class="card-body p-0 collapse"

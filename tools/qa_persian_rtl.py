@@ -235,6 +235,8 @@ def check_generated_output(
 
     translated_keys = collect_translation_keys(source_root)
     for path in sorted(output_dir.rglob("*.html")):
+        if not path.is_file():
+            continue
         if not include_archives and is_archived_path(path, output_dir):
             stats["skipped_archives"] += 1
             continue
@@ -361,11 +363,13 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--include-archives", action="store_true", help="Include archived version pages in HTML checks.")
     parser.add_argument("--require-output", action="store_true", help="Fail if the generated output directory is missing.")
     parser.add_argument("--require-stix", action="store_true", help="Fail if generated STIX JSON is missing.")
-    parser.add_argument("--min-name-coverage", type=float, default=0.0, help="Minimum total name_fa coverage percentage.")
+    parser.add_argument(
+        "--min-name-coverage", type=float, default=99.0, help="Minimum total name_fa coverage percentage."
+    )
     parser.add_argument(
         "--min-description-coverage",
         type=float,
-        default=0.0,
+        default=99.5,
         help="Minimum total description_fa coverage percentage.",
     )
     parser.add_argument("--max-issues", type=int, default=50, help="Maximum issue lines to print before truncating.")

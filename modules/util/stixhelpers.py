@@ -499,6 +499,7 @@ def get_stix_memory_stores():
             shutil.copy(domain["location"], str(stix_filename))
 
         if os.path.exists(stix_filename):
+            overlay_stix_translations(stix_filename, domain.get("translations", ""))
             stix_filenames.append(stix_filename)
             ms[domain["name"]] = stix2.MemoryStore()
             ms[domain["name"]].load_from_file(stix_filename)
@@ -512,6 +513,78 @@ def get_stix_memory_stores():
     generate_stix_translation_javascript(stix_filenames)
 
     return ms, srcs
+
+
+def overlay_stix_translations(stix_filename, translations_location):
+    """Add available Persian fields to a STIX bundle, matching objects by STIX ID."""
+    if not translations_location:
+        return 0
+
+    try:
+        translations = load_stix_translations(translations_location)
+        with open(stix_filename, "r", encoding="utf8") as stix_file:
+            stix_bundle = json.load(stix_file)
+
+        translated_objects = {}
+        for translated_object in translations:
+            stix_id = translated_object.get("id")
+            if stix_id:
+                translated_objects[stix_id] = translated_object
+
+        overlaid = 0
+        for stix_object in stix_bundle.get("objects", []):
+            translated_object = translated_objects.get(stix_object.get("id"))
+            if not translated_object:
+                continue
+
+            changed = False
+            for field in ("name_fa", "description_fa"):
+                value = translated_object.get(field)
+                if isinstance(value, str) and value.strip():
+                    stix_object[field] = value
+                    changed = True
+            if changed:
+                overlaid += 1
+
+        with open(stix_filename, "w", encoding="utf8") as stix_file:
+            json.dump(stix_bundle, stix_file, ensure_ascii=False)
+
+        logger.info(f"Applied Persian translations to {overlaid} STIX objects from: {translations_location}")
+        return overlaid
+    except (OSError, ValueError, requests.RequestException) as exc:
+        logger.warning(f"Unable to load Persian STIX translations from {translations_location}: {exc}")
+        return 0
+
+
+def load_stix_translations(translations_location):
+    """Load translated STIX objects from a bundle URL, bundle file, or directory tree."""
+    if translations_location.startswith(("http://", "https://")):
+        response = requests.get(translations_location, timeout=60)
+        response.raise_for_status()
+        return get_stix_objects(response.json())
+
+    path = Path(translations_location)
+    if path.is_file():
+        with path.open("r", encoding="utf8") as translation_file:
+            return get_stix_objects(json.load(translation_file))
+    if path.is_dir():
+        translated_objects = []
+        for translation_path in sorted(path.rglob("*.json")):
+            with translation_path.open("r", encoding="utf8") as translation_file:
+                translated_objects.extend(get_stix_objects(json.load(translation_file)))
+        return translated_objects
+    raise OSError(f"Translation source does not exist: {translations_location}")
+
+
+def get_stix_objects(stix_json):
+    """Return objects from either a STIX bundle or one bare STIX object."""
+    if not isinstance(stix_json, dict):
+        raise ValueError("Translation JSON must be a STIX bundle or object")
+    if isinstance(stix_json.get("objects"), list):
+        return [item for item in stix_json["objects"] if isinstance(item, dict)]
+    if stix_json.get("id"):
+        return [stix_json]
+    raise ValueError("Translation JSON has no STIX objects")
 
 
 def generate_stix_translation_javascript(stix_filenames):
@@ -532,7 +605,6 @@ def generate_stix_translation_javascript(stix_filenames):
             description = stix_object.get("description")
             description_fa = stix_object.get("description_fa")
             if description and description_fa:
-                translations["fa"][description] = description_fa
                 description_translations["fa"][normalize_translation_key(description)] = description_fa
 
     translations_path = os.path.join(site_config.javascript_path, "stix-translations.js")
@@ -541,11 +613,17 @@ def generate_stix_translation_javascript(stix_filenames):
             "/* Generated from STIX name_fa and description_fa fields. Keep ES3-compatible for IE8. */\n"
         )
         translations_file.write("window.attackStixTextTranslations = ")
-        translations_file.write(json.dumps(translations, ensure_ascii=False, separators=(",", ":")))
+        translations_file.write(to_javascript_object_literal(translations))
         translations_file.write(";\n")
         translations_file.write("window.attackStixDescriptionTranslations = ")
-        translations_file.write(json.dumps(description_translations, ensure_ascii=False, separators=(",", ":")))
+        translations_file.write(to_javascript_object_literal(description_translations))
         translations_file.write(";\n")
+
+
+def to_javascript_object_literal(value):
+    """Serialize data as a plain ES3 object literal with JavaScript-safe Unicode separators."""
+    literal = json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+    return literal.replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
 
 
 def normalize_translation_key(value):

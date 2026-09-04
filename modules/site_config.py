@@ -22,6 +22,9 @@ if attack_version.startswith("v"):
 
 # Domains for stix objects
 CTI_RAW_BASE_URL = os.getenv("CTI_RAW_BASE_URL", "https://raw.githubusercontent.com/mbpmohsen/cti-persian/master")
+CTI_PERSIAN_BASE_URL = os.getenv(
+    "CTI_PERSIAN_BASE_URL", "https://raw.githubusercontent.com/mbpmohsen/cti-persian/master"
+)
 STIX_LOCATION_ENTERPRISE = os.getenv(
     "STIX_LOCATION_ENTERPRISE",
     f"{CTI_RAW_BASE_URL}/enterprise-attack/enterprise-attack.json",
@@ -35,11 +38,42 @@ STIX_LOCATION_ICS = os.getenv(
 STIX_LOCATION_PRE = os.getenv(
     "STIX_LOCATION_PRE", f"{CTI_RAW_BASE_URL}/pre-attack/pre-attack.json"
 )
+STIX_TRANSLATIONS_ENTERPRISE = os.getenv(
+    "STIX_TRANSLATIONS_ENTERPRISE",
+    f"{CTI_PERSIAN_BASE_URL}/enterprise-attack/enterprise-attack.json",
+)
+STIX_TRANSLATIONS_MOBILE = os.getenv("STIX_TRANSLATIONS_MOBILE", "")
+STIX_TRANSLATIONS_ICS = os.getenv("STIX_TRANSLATIONS_ICS", "")
+STIX_TRANSLATIONS_PRE = os.getenv("STIX_TRANSLATIONS_PRE", "")
 domains = [
-    {"name": "enterprise-attack", "location": STIX_LOCATION_ENTERPRISE, "alias": "Enterprise", "deprecated": False},
-    {"name": "mobile-attack", "location": STIX_LOCATION_MOBILE, "alias": "Mobile", "deprecated": False},
-    {"name": "ics-attack", "location": STIX_LOCATION_ICS, "alias": "ICS", "deprecated": False},
-    {"name": "pre-attack", "location": STIX_LOCATION_PRE, "alias": "PRE-ATT&CK", "deprecated": True},
+    {
+        "name": "enterprise-attack",
+        "location": STIX_LOCATION_ENTERPRISE,
+        "translations": STIX_TRANSLATIONS_ENTERPRISE,
+        "alias": "Enterprise",
+        "deprecated": False,
+    },
+    {
+        "name": "mobile-attack",
+        "location": STIX_LOCATION_MOBILE,
+        "translations": STIX_TRANSLATIONS_MOBILE,
+        "alias": "Mobile",
+        "deprecated": False,
+    },
+    {
+        "name": "ics-attack",
+        "location": STIX_LOCATION_ICS,
+        "translations": STIX_TRANSLATIONS_ICS,
+        "alias": "ICS",
+        "deprecated": False,
+    },
+    {
+        "name": "pre-attack",
+        "location": STIX_LOCATION_PRE,
+        "translations": STIX_TRANSLATIONS_PRE,
+        "alias": "PRE-ATT&CK",
+        "deprecated": True,
+    },
 ]
 
 # Directory for attack version archives
